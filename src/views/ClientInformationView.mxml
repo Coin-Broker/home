@@ -14,13 +14,21 @@
 	<s:VGroup>
 		<s:HGroup>
 			<s:Label text="ID: "/>
+			<s:Label text="cID"/>
 			<s:Label text="Name: "/>
+			<s:Label text="cName"/>
 			<s:Label text="Address: "/>
+			<s:Label text="cAddress"/>
 			<s:Label text="City: "/>
+			<s:Label text="cCity"/>
 			<s:Label text="State: "/>
+			<s:Label text="cState"/>
 			<s:Label text="Phone: "/>
+			<s:Label text="cPhone"/>
 			<s:Label text="Balance: "/>
+			<s:Label text="cBalance"/>
 			<s:Label text="PIN: "/>
+			<s:Label text="cPIN"/>
 		</s:HGroup>
 	</s:VGroup>
 	
