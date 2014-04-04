@@ -21,7 +21,8 @@
 			<s:Label text="Coin Price Per Coin"/>
 			<s:Label text="$pri.ce"/>
 		</s:HGroup>
-		<mx:LineChart dataProvider="{new ArrayCollection()}" 
+		<mx:LineChart id="chart"
+					  dataProvider="{new ArrayCollection()}" 
 					  showDataTips="true">
 			<mx:horizontalAxis>
 				<mx:DateTimeAxis />
@@ -31,6 +32,7 @@
 			</mx:series>
 			
 		</mx:LineChart>
+		<mx:Legend dataProvider="{chart}"/>
 	</s:VGroup>
 	
 	
