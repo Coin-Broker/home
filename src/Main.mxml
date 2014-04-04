@@ -20,8 +20,8 @@
 		<views:BannerMenu/>
 		<s:TabBar dataProvider="{views}"/>
 		<mx:ViewStack id="views">
-			<views:MainView/>
-			<views:ClientStockListsView/>
+			<views:MainView label="Main View"/>
+			<views:ClientStockListsView label="Client Stock Lists"/>
 		</mx:ViewStack>
 	</s:VGroup>
 	

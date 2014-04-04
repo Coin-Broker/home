@@ -15,7 +15,12 @@
 	</fx:Script>
 	
 						
-	<s:Group>
-		<s:Label text="MainView"/>
-	</s:Group>
+	<s:HGroup>
+		<s:VGroup id="clientStockSearch">
+			
+		</s:VGroup>
+		<s:VGroup id="clientStockDisplay">
+			
+		</s:VGroup>
+	</s:HGroup>
 </s:NavigatorContent >

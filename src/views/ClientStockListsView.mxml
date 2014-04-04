@@ -16,7 +16,7 @@
 	</fx:Script>
 	
 		
-	<s:Group>
+	<s:Group id="clientStockListView">
 		<s:Label text="Client StockList View"/>		
 	</s:Group>
 	
