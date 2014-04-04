@@ -5,10 +5,11 @@ package model
 	[Bindable]
 	public class ModelLocator
 	{
-		public var clientList:ArrayCollection;
-		public var stockList:ArrayCollection
+		public var clients:ArrayCollection;
+		public var coins:ArrayCollection
 		
-		public var selectedClient:Client;
+		public var selectedClient:ClientVO;
+		public var selectedCoin:CoinVO
 		
 		
 		
