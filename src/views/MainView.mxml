@@ -20,6 +20,7 @@
 			
 		</s:VGroup>
 		<s:VGroup id="clientStockDisplay">
+			<views:ClientInformationView/>
 			<views:StockInformationView/>
 		</s:VGroup>
 	</s:HGroup>
