@@ -2,7 +2,8 @@
 <s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
-			   minWidth="955" minHeight="600" xmlns:views="views.*">
+			   xmlns:views="views.*"
+			   height="600" width="800" >
 	
 	<fx:Declarations>
 		
@@ -19,9 +20,11 @@
 	<s:VGroup width="100%" height="100%">
 		<views:BannerMenu/>
 		<s:TabBar dataProvider="{views}"/>
-		<mx:ViewStack id="views">
+		<mx:ViewStack id="views" height="100%" width="100%" >
 			<views:MainView label="Main View"/>
-			<views:ClientStockListsView label="Client Stock Lists"/>
+			<views:ClientCoinListsView label="Client Stock Lists"/>
+			<views:AccountManagementView label="Account Management"/>
+			<views:ManagementView label="Management"/>
 		</mx:ViewStack>
 	</s:VGroup>
 	

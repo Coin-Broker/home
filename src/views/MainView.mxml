@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
 					xmlns:s="library://ns.adobe.com/flex/spark"
-					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:views="views.*">
+					xmlns:mx="library://ns.adobe.com/flex/mx" 
+					xmlns:views="views.*"
+					height="100%" width="100%" >
 					
 	<fx:Declarations>
 		
@@ -10,18 +12,22 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import model.ModelLocator;
+			
+			[Bindable]
+			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
 		]]>
 	</fx:Script>
 	
 						
-	<s:HGroup>
-		<s:VGroup id="clientStockSearch">
+	<s:HGroup height="100%" width="100%" >
+		<s:VGroup id="clientStockSearch" width="200">
 			
 		</s:VGroup>
-		<s:VGroup id="clientStockDisplay">
-			<views:ClientInformationView/>
-			<views:StockInformationView/>
+		<s:VGroup id="clientStockDisplay" height="100%" width="100%" >
+			<views:ClientInformationView client="{modelLocator.selectedClient}"/>
+			<views:CoinInformationView coin="{modelLocator.selectedCoin}" />
 		</s:VGroup>
 	</s:HGroup>
 </s:NavigatorContent >

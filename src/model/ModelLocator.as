@@ -8,10 +8,8 @@ package model
 		public var clients:ArrayCollection;
 		public var coins:ArrayCollection
 		
-		public var selectedClient:ClientVO;
-		public var selectedCoin:CoinVO
-		
-		
+		public var selectedClient:ClientVO = Mock.getClientVO();
+		public var selectedCoin:CoinVO = Mock.getCoinVO();	
 		
 		
 		

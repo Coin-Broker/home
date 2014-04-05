@@ -2,6 +2,7 @@ package model
 {
 	import mx.collections.ArrayCollection;
 
+	[Bindable]
 	public class CoinVO
 	{
 		public var name:String;
