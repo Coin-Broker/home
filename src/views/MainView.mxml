@@ -26,6 +26,7 @@
 			
 		</s:VGroup>
 		<s:VGroup id="clientStockDisplay" height="100%" width="100%" >
+			<s:Button click="{modelLocator.updateClientList()}"/>
 			<views:ClientInformationView client="{modelLocator.selectedClient}"/>
 			<views:CoinInformationView coin="{modelLocator.selectedCoin}" />
 		</s:VGroup>
