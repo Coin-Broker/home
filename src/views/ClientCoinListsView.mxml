@@ -12,34 +12,29 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import model.ModelLocator;			
+			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
-			//public var labels:String = new Array(2);
-			//labels[0] = "Clients";
-			//labels[1] = "Coins/Stocks";
+			[Bindable]
+			public var currentView:String = "Clients";
 			
-			public var clicker:Boolean = true;
 			
+			protected function switchView(event:MouseEvent):void
+			{
+				currentView = currentView == "Clients" ? "Coins" : "Clients"				
+			}
 			
 		]]>
 	</fx:Script>
 	
 	
 	<s:Group id="clientStockListView">
-		<s:Label text="Client StockList View"/>	
 		
 		<s:VGroup id="ButtonandDatagrid">
 			
 			
-			<s:Button id="theButton" label="Clients">
-				
-				
-				<s:click>
-					<![CDATA[
-					clicker = !clicker;
-					]]>
-				</s:click>
-			</s:Button>
-			
+			<s:Button id="theButton" label="{'Switch to View ' + currentView }"
+					  click="switchView(event)"/>
 			
 			<s:DataGrid id="theGrid">
 				
