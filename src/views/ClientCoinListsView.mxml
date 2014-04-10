@@ -12,7 +12,8 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import model.ModelLocator;			
+			import model.ModelLocator;	
+			[Bindable]
 			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
 			[Bindable]
@@ -33,10 +34,10 @@
 		<s:VGroup id="ButtonandDatagrid">
 			
 			
-			<s:Button id="theButton" label="{'Switch to View ' + currentView }"
+			<s:Button id="theButton" label="{'Switch to View ' + (currentView == 'Clients' ? 'Coins' : 'Clients') }"
 					  click="switchView(event)"/>
 			
-			<s:DataGrid id="theGrid">
+			<s:DataGrid id="theGrid" dataProvider="{currentView == 'Clients' ? modelLocator.clients : modelLocator.coins}">
 				
 			</s:DataGrid>
 		</s:VGroup>
