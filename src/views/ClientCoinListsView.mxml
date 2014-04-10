@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 height="100%" width="100%" >
-
-
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx"
+					height="100%" width="100%" >
+	
+	
 	<fx:Declarations>
 		
 	</fx:Declarations>
@@ -13,12 +13,38 @@
 	<fx:Script>
 		<![CDATA[
 			
+			//public var labels:String = new Array(2);
+			//labels[0] = "Clients";
+			//labels[1] = "Coins/Stocks";
+			
+			public var clicker:Boolean = true;
+			
+			
 		]]>
 	</fx:Script>
 	
-		
+	
 	<s:Group id="clientStockListView">
-		<s:Label text="Client StockList View"/>		
+		<s:Label text="Client StockList View"/>	
+		
+		<s:VGroup id="ButtonandDatagrid">
+			
+			
+			<s:Button id="theButton" label="Clients">
+				
+				
+				<s:click>
+					<![CDATA[
+					clicker = !clicker;
+					]]>
+				</s:click>
+			</s:Button>
+			
+			
+			<s:DataGrid id="theGrid">
+				
+			</s:DataGrid>
+		</s:VGroup>
 	</s:Group>
 	
 </s:NavigatorContent>
