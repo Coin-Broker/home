@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 height="100%" width="100%" >
+		 height="100%" width="100%" xmlns:local="*" >
 	
 	<fx:Declarations>
 	</fx:Declarations>
@@ -13,6 +13,9 @@
 			
 			[Bindable]
 			public var client:ClientVO; 
+			
+			[Bindable]
+			public var editing:Boolean = false;
 		]]>
 	</fx:Script>
 	
@@ -23,32 +26,53 @@
 	</s:Rect>
 	<s:VGroup height="100%" width="100%"
 			  left="10" right="10" top="10" bottom="10">
-		<s:HGroup width="100%">
-			<s:Label text="ID: " fontWeight="bold"/>
-			<s:Label text="cID"/>
+		<s:HGroup width="100%" >
+			<local:HNameValueLabel label="ID: " 
+								   value="ID"/>
 			<s:Spacer width="100%"/>
-			<s:Label text="Name: " fontWeight="bold"/>
-			<s:Label text="{client.firstName + ' ' + client.lastName}"/>
+			<local:HNameValueLabel label="Name: "
+								   editable="{editing}"
+								   value="{client.firstName + ' ' + client.lastName}"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
-			<s:Label text="Address: " fontWeight="bold"/>
-			<s:Label text="{client.address}"/>
-			<s:Spacer width="100%"/>
-			<s:Label text="City: " fontWeight="bold"/>
-			<s:Label text="{client.city}"/>
-			<s:Spacer width="100%"/>
-			<s:Label text="State: " fontWeight="bold"/>
-			<s:Label text="{client.state}"/>
+			<local:HNameValueLabel label="Address: " 
+								   editable="{editing}"
+								   value="{client.address}"/>
+			<s:Spacer width="100%"/>			
+			<local:HNameValueLabel label="City: "
+								   editable="{editing}"
+								   value="{client.city}"/>
+			<s:Spacer width="100%"/>			
+			<local:HNameValueLabel label="State: "
+								   editable="{editing}"
+								   value="{client.state}"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
-			<s:Label text="Phone: " fontWeight="bold"/>
-			<s:Label text="cPhone"/>
+			<local:HNameValueLabel label="Phone: "
+								   editable="{editing}"
+								   value="{client.phone}"/>
 			<s:Spacer width="100%"/>
-			<s:Label text="Balance: " fontWeight="bold"/>
-			<s:Label text="cBalance"/>
+			<local:HNameValueLabel label="Balance: "
+								   editable="{editing}"
+								   value="cBalance"/>
 			<s:Spacer width="100%"/>
-			<s:Label text="PIN: " fontWeight="bold"/>
-			<s:Label text="{client.pinCode}"/>
+			<local:HNameValueLabel label="PIN: "
+								   editable="{editing}"
+								   value="{client.pinCode}"/>
+		</s:HGroup>
+		<s:HGroup width="100%" verticalAlign="middle">
+			<s:Label text="Number of Shares: " fontWeight="bold"/>
+			<s:TextInput prompt="Number of shares" width="33%"/>
+			<s:Button label="Buy" width="33%"/>
+			<s:Button label="Sell" width="33%"/>
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:TextInput prompt="Amount to Withdraw or Add" width="33%"/>
+			<s:Button label="Add Funds" width="33%"/>
+			<s:Button label="Withdraw Funds" width="33%" />
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<s:Button label="{editing? 'Save' : 'Update Info'}" click="{editing=!editing}"/>			
 		</s:HGroup>
 	</s:VGroup>
 	

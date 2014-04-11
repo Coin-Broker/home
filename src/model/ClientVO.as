@@ -11,6 +11,7 @@ package model
 		public var city:String;
 		public var state:String;
 		public var pinCode:String;
+		public var phone:String;
 		
 		public var coins:ArrayCollection;
 	}

@@ -10,8 +10,8 @@ package model
 	{
 		
 		private var remoteObject:RemoteObject;
-		public var clients:ArrayCollection;
-		public var coins:ArrayCollection
+		public var clients:ArrayCollection = Mock.getClients();
+		public var coins:ArrayCollection = Mock.getCoins();
 		
 		public var selectedClient:ClientVO = Mock.getClientVO();
 		public var selectedCoin:CoinVO = Mock.getCoinVO();	

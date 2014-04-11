@@ -29,18 +29,16 @@
 	</fx:Script>
 	
 	
-	<s:Group id="clientStockListView">
+	<s:VGroup id="clientStockListView" width="100%" height="100%">
+		<s:Button id="theButton" 
+				  label="{'Switch to View ' + (currentView == 'Clients' ? 'Coins' : 'Clients') }"
+				  click="switchView(event)"/>
 		
-		<s:VGroup id="ButtonandDatagrid">
+		<s:DataGrid id="theGrid" 
+					width="100%" height="100%"
+					dataProvider="{currentView == 'Clients' ? modelLocator.clients : modelLocator.coins}">
 			
-			
-			<s:Button id="theButton" label="{'Switch to View ' + (currentView == 'Clients' ? 'Coins' : 'Clients') }"
-					  click="switchView(event)"/>
-			
-			<s:DataGrid id="theGrid" dataProvider="{currentView == 'Clients' ? modelLocator.clients : modelLocator.coins}">
-				
-			</s:DataGrid>
-		</s:VGroup>
-	</s:Group>
+		</s:DataGrid>
+	</s:VGroup>
 	
 </s:NavigatorContent>
