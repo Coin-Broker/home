@@ -12,17 +12,23 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
+			
 			import model.ModelLocator;	
 			[Bindable]
 			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
 			[Bindable]
-			public var currentView:String = "Clients";
+			public var currentView:String = "clients";
+			
+			[Bindable]
+			public var dataProvider:ArrayCollection =new ArrayCollection( modelLocator.clients.source );
 			
 			
 			protected function switchView(event:MouseEvent):void
 			{
-				currentView = currentView == "Clients" ? "Coins" : "Clients"				
+				currentView = currentView == "clients" ? "coins" : "clients"
+				dataProvider = new ArrayCollection(( modelLocator[currentView] ).source);
 			}
 			
 		]]>
@@ -31,12 +37,12 @@
 	
 	<s:VGroup id="clientStockListView" width="100%" height="100%">
 		<s:Button id="theButton" 
-				  label="{'Switch to View ' + (currentView == 'Clients' ? 'Coins' : 'Clients') }"
+				  label="{'Switch to View ' + (currentView == 'clients' ? 'Coins' : 'Clients') }"
 				  click="switchView(event)"/>
 		
 		<s:DataGrid id="theGrid" 
 					width="100%" height="100%"
-					dataProvider="{currentView == 'Clients' ? modelLocator.clients : modelLocator.coins}">
+					dataProvider="{dataProvider}">
 			
 		</s:DataGrid>
 	</s:VGroup>

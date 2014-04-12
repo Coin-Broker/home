@@ -65,15 +65,13 @@
 			}
 			
 			private function clientFilterForText(item:Object):Boolean
-			{
-				
+			{				
 				for each (var itemProp:String in ObjectUtil.getClassInfo(item).properties) 
 				{
 					if(item[itemProp] is String && item[itemProp].toLowerCase().search(clientFilterText.text.toLowerCase()) != -1)
 						return true;
 				}
-				return false;
-				
+				return false;	
 			}
 			
 			protected function updateCoinFilter(event:TextOperationEvent):void
