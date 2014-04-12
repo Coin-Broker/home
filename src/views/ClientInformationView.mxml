@@ -5,6 +5,7 @@
 		 height="100%" width="100%" xmlns:local="*" >
 	
 	<fx:Declarations>
+		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99"/> 
 	</fx:Declarations>
 	
 	<fx:Script>
@@ -54,7 +55,7 @@
 			<s:Spacer width="100%"/>
 			<local:HNameValueLabel label="Balance: "
 								   editable="{editing}"
-								   value="cBalance"/>
+								   value="{client.accountBalance}"/>
 			<s:Spacer width="100%"/>
 			<local:HNameValueLabel label="PIN: "
 								   editable="{editing}"
@@ -62,12 +63,15 @@
 		</s:HGroup>
 		<s:HGroup width="100%" verticalAlign="middle">
 			<s:Label text="Number of Shares: " fontWeight="bold"/>
-			<s:TextInput prompt="Number of shares" width="33%"/>
+			<s:TextInput prompt="Number of shares" width="33%" restrict="[0-9]"/>
 			<s:Button label="Buy" width="33%"/>
 			<s:Button label="Sell" width="33%"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
-			<s:TextInput prompt="Amount to Withdraw or Add" width="33%"/>
+			<s:TextInput prompt="Amount to Withdraw or Add" 
+						 id="dollarAmount"
+						 width="33%"
+						 restrict="[0-9.]"/>
 			<s:Button label="Add Funds" width="33%"/>
 			<s:Button label="Withdraw Funds" width="33%" />
 		</s:HGroup>

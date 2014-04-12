@@ -12,23 +12,123 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.utils.ObjectUtil;
+			
+			import spark.events.TextOperationEvent;
+			
+			import model.ClientVO;
+			import model.CoinVO;
 			import model.ModelLocator;
+
+			private var _clients:ArrayCollection;
+			private var _coins:ArrayCollection;
 			
 			[Bindable]
-			public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			public var client:ClientVO;
+			[Bindable]
+			public var coin:CoinVO;
+			
+			[Bindable]
+			public function get clients():ArrayCollection
+			{
+				return _clients;
+			}
+
+			public function set clients(value:ArrayCollection):void
+			{
+				_clients = new ArrayCollection(value.source);;
+			}
+
+			[Bindable]
+			public function get coins():ArrayCollection
+			{
+				return _coins;
+			}
+
+			public function set coins(value:ArrayCollection):void
+			{
+				_coins = new ArrayCollection(value.source);
+				
+			}
+
+			private function coinFilterForText(item:Object):Boolean
+			{
+				
+				for each (var itemProp:String in ObjectUtil.getClassInfo(item).properties) 
+				{
+					if(item[itemProp] is String && item[itemProp].toLowerCase().search(coinFilterText.text.toLowerCase()) != -1)
+						return true;
+				}
+				return false;
+				
+			}
+			
+			private function clientFilterForText(item:Object):Boolean
+			{
+				
+				for each (var itemProp:String in ObjectUtil.getClassInfo(item).properties) 
+				{
+					if(item[itemProp] is String && item[itemProp].toLowerCase().search(clientFilterText.text.toLowerCase()) != -1)
+						return true;
+				}
+				return false;
+				
+			}
+			
+			protected function updateCoinFilter(event:TextOperationEvent):void
+			{				
+				coins.filterFunction = coinFilterForText;
+				coins.refresh();
+			}
+			
+			protected function updateClientFilter(event:TextOperationEvent):void
+			{
+				clients.filterFunction = clientFilterForText;
+				clients.refresh();
+			}
 			
 		]]>
 	</fx:Script>
 	
 						
 	<s:HGroup height="100%" width="100%" >
-		<s:VGroup id="clientStockSearch" width="200">
+		<s:VGroup id="clientStockSearch" width="200" height="100%"> 
+
+			<s:HGroup>
+				<s:TextInput id="clientFilterText" prompt="Client Search" change="updateClientFilter(event)"/>
+				<s:Button label="Clear" click="{clientFilterText.text = '';updateClientFilter(null);}"/>
+			</s:HGroup>	
+			<s:DataGrid width="100%" height="100%" 
+						dataProvider="{clients}">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="firstName" headerText="Last Name"/>
+						<s:GridColumn dataField="lastName" headerText="Last Name"/>
+					</s:ArrayList>
+				</s:columns>
+				
+			</s:DataGrid>
+			<s:HGroup>
+				<s:TextInput id="coinFilterText" prompt="Coin Search" change="updateCoinFilter(event)"/>
+				<s:Button label="Clear" click="{coinFilterText.text = '';updateCoinFilter(null);}"/>
+			</s:HGroup>			
+			<s:DataGrid width="100%" height="100%" 
+						dataProvider="{coins}">
+				<s:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="name" headerText="Coin"/>
+						<s:GridColumn dataField="symbol" headerText="symbol"/>
+					</s:ArrayList>
+				</s:columns>
+				
+			</s:DataGrid>
 			
 		</s:VGroup>
 		<s:VGroup id="clientStockDisplay" height="100%" width="100%" >
-			<s:Button label="click Me" click="{modelLocator.updateClientList()}"/>
-			<views:ClientInformationView client="{modelLocator.selectedClient}"/>
-			<views:CoinInformationView coin="{modelLocator.selectedCoin}" />
+			<s:Button label="click Me" click="{ModelLocator.getInstance().updateClientList()}"/>
+			<views:ClientInformationView client="{client}"/>
+			<views:CoinInformationView coin="{coin}" />
 		</s:VGroup>
 	</s:HGroup>
 </s:NavigatorContent >

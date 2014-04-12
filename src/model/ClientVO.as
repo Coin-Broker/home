@@ -12,6 +12,7 @@ package model
 		public var state:String;
 		public var pinCode:String;
 		public var phone:String;
+		public var accountBalance:Number;
 		
 		public var coins:ArrayCollection;
 	}

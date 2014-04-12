@@ -12,6 +12,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import model.ModelLocator;
 			
 		]]>
 	</fx:Script>
@@ -21,7 +22,9 @@
 		<views:BannerMenu/>
 		<s:TabBar dataProvider="{views}"/>
 		<mx:ViewStack id="views" height="100%" width="100%" >
-			<views:MainView label="Main View"/>
+			<views:MainView label="Main View" 
+							coins="{ModelLocator.getInstance().coins}"
+							clients="{ModelLocator.getInstance().clients}"/>
 			<views:ClientCoinListsView label="Client Stock Lists"/>
 			<views:AccountManagementView label="Account Management"/>
 			<views:ManagementView label="Management"/>
