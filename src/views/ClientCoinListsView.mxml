@@ -13,6 +13,9 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
+			import mx.utils.ObjectUtil;
+			
+			import spark.events.TextOperationEvent;
 			
 			import model.ModelLocator;	
 			[Bindable]
@@ -29,6 +32,23 @@
 			{
 				currentView = currentView == "clients" ? "coins" : "clients"
 				dataProvider = new ArrayCollection(( modelLocator[currentView] ).source);
+				dataProvider.refresh();
+			}
+			
+			private function clientFilterForText(item:Object):Boolean
+			{				
+				for each (var itemProp:String in ObjectUtil.getClassInfo(item).properties) 
+				{
+					if(item[itemProp] is String && item[itemProp].toLowerCase().search(clientFilterText.text.toLowerCase()) != -1)
+						return true;
+				}
+				return false;	
+			}
+			
+			protected function updateFilter(event:TextOperationEvent):void
+			{
+				dataProvider.filterFunction = clientFilterForText;
+				dataProvider.refresh();
 			}
 			
 		]]>
@@ -39,6 +59,11 @@
 		<s:Button id="theButton" 
 				  label="{'Switch to View ' + (currentView == 'clients' ? 'Coins' : 'Clients') }"
 				  click="switchView(event)"/>
+		
+		<s:HGroup>
+			<s:TextInput id="clientFilterText" prompt="{(currentView == 'clients' ? 'Client Search' : 'Coin Search')}" change="updateFilter(event)"/>
+			<s:Button label="Clear" click="{clientFilterText.text = '';updateFilter(null);}"/>
+		</s:HGroup>	
 		
 		<s:DataGrid id="theGrid" 
 					width="100%" height="100%"
