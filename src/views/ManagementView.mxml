@@ -16,7 +16,10 @@
 		]]>
 	</fx:Script>
 	
-
-			<s:Label text="what can a manager do ?"/>
+	<s:VGroup>
+		<s:Label text="what can a manager do ?"/>
+		<s:Label text="setCommission Rate"/>	
+	</s:VGroup>
+		
 
 </s:NavigatorContent >
