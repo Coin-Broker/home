@@ -2,7 +2,7 @@
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 height="100%" width="100%" xmlns:local="*" >
+		 height="100%" width="100%" xmlns:local="*" xmlns:components="components.*" >
 	
 	<fx:Declarations>
 		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99"/> 
@@ -62,36 +62,36 @@
 	<s:VGroup height="100%" width="100%"
 			  left="10" right="10" top="10" bottom="10">
 		<s:HGroup width="100%" >
-			<local:HNameValueLabel label="ID: " 
+			<components:HNameValueLabel label="ID: " 
 								   value="{client.id}"/>
 			<s:Spacer width="100%"/>
-			<local:HNameValueLabel label="Name: "
+			<components:HNameValueLabel label="Name: "
 								   editable="{editing}"
 								   value="{client.firstName + ' ' + client.lastName}"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
-			<local:HNameValueLabel label="Address: " 
+			<components:HNameValueLabel label="Address: " 
 								   editable="{editing}"
 								   value="{client.address}"/>
 			<s:Spacer width="100%"/>			
-			<local:HNameValueLabel label="City: "
+			<components:HNameValueLabel label="City: "
 								   editable="{editing}"
 								   value="{client.city}"/>
 			<s:Spacer width="100%"/>			
-			<local:HNameValueLabel label="State: "
+			<components:HNameValueLabel label="State: "
 								   editable="{editing}"
 								   value="{client.state}"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
-			<local:HNameValueLabel label="Phone: "
+			<components:HNameValueLabel label="Phone: "
 								   editable="{editing}"
 								   value="{client.phone}"/>
 			<s:Spacer width="100%"/>
-			<local:HNameValueLabel label="Balance: "
+			<components:HNameValueLabel label="Balance: "
 								   editable="{editing}"
 								   value="{client.accountBalance}"/>
 			<s:Spacer width="100%"/>
-			<local:HNameValueLabel label="PIN: "
+			<components:HNameValueLabel label="PIN: "
 								   editable="{editing}"
 								   value="{client.pinCode}"/>
 		</s:HGroup>
