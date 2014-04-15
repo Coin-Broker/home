@@ -1,12 +1,7 @@
 package services
 {
-	import mx.binding.utils.ChangeWatcher;
 	import mx.collections.ArrayCollection;
-	import mx.events.CollectionEvent;
-	import mx.events.PropertyChangeEvent;
-	import mx.events.PropertyChangeEventKind;
 	import mx.rpc.IResponder;
-	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.RemoteObject;
 	
@@ -47,18 +42,10 @@ package services
 					
 				case Services.getClient:
 				{
-					trace("getClient Called " + params)
-					var client:ClientVO = new ClientVO();
-					client.accountBalance = params['cashBalance'];
-					client.city = params['city'];
-					client.state = params['state'];
-					client.firstName = params['firstName'];
-					client.lastName = params['lastName'];
-					client.pinCode = params['pin'];
-					client.phone = params['phone'];
-					client.address = params['address'];
-					client.id = params['clientId'];
-					modelLocator.selectedClient = client;
+					//trace("getClient Called " + params)
+					
+					remoteObject.requestClientCoins(int(params['clientId'])).addResponder(this);
+					
 					break;
 				}
 					
@@ -79,16 +66,43 @@ package services
 		public function result(data:Object):void
 		{
 			trace(data);
+			var collection:ArrayCollection;
 			switch(modelProperty)
 			{
 				case "clients":
 				{
-					var collection:ArrayCollection;
 					collection = new ArrayCollection( );
 					modelLocator.clients = new ArrayCollection((data as ResultEvent).result as Array);
 /*					collection = (modelLocator[modelProperty] as ArrayCollection);
 					(modelLocator[modelProperty] as ArrayCollection).dispatchEvent(new PropertyChangeEvent ( PropertyChangeEventKind.UPDATE));
 					collection.refresh();*/
+					break;
+				}
+					
+				case "coins":
+				{
+					collection = new ArrayCollection( );
+					modelLocator.coins = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}
+					
+				case "selectedClient":
+				{
+					var client:ClientVO = new ClientVO();
+					client.accountBalance = params['cashBalance'];
+					client.city = params['city'];
+					client.state = params['state'];
+					client.firstName = params['firstName'];
+					client.lastName = params['lastName'];
+					client.pinCode = params['pin'];
+					client.phone = params['phone'];
+					client.address = params['address'];
+					client.id = params['clientId'];				
+					
+					collection = new ArrayCollection( );
+					client.coins = new ArrayCollection((data as ResultEvent).result as Array);
+					
+					modelLocator.selectedClient = client;
 					break;
 				}
 					

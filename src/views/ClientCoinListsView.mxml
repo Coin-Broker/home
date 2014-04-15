@@ -19,6 +19,9 @@
 			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
 			[Bindable]
+			private var clientSize:int
+			
+			[Bindable]
 			public var currentView:String = "clients";
 			
 			private var _clients:ArrayCollection;// =
@@ -36,6 +39,7 @@
 			public function set clients(value:ArrayCollection):void
 			{
 				_clients = value;
+				clientSize = value.length;
 				dataProvider = currentView == "clients" ? new ArrayCollection(clients.source):  new ArrayCollection(coins.source);
 			}
 
@@ -60,9 +64,14 @@
 	
 	
 	<s:VGroup id="clientStockListView" width="100%" height="100%">
-		<s:Button id="theButton" 
-				  label="{'Switch to View ' + (currentView == 'clients' ? 'Coins' : 'Clients') }"
-				  click="switchView(event)"/>		
+		<s:HGroup verticalAlign="bottom">
+			<s:Button id="theButton" 
+					  label="{'Switch to View ' + (currentView == 'clients' ? 'Coins' : 'Clients') }"
+					  click="switchView(event)"/>
+			<s:Label text="{'Total of ' + clientSize + ' Clients'}"
+					 visible="{currentView == 'clients'}"/>
+		</s:HGroup>
+				
 		
 		<components:DataGirdWithSearch 
 			dataProvider="{dataProvider}"
