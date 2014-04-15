@@ -24,14 +24,40 @@
 			[Bindable]
 			public var currentView:String = "clients";
 			
+			private var _clients:ArrayCollection;// =
+			private var _coins:ArrayCollection;// =
+			
 			[Bindable]
-			public var dataProvider:ArrayCollection =new ArrayCollection( modelLocator.clients.source );
+			public var dataProvider:ArrayCollection = new ArrayCollection( modelLocator.clients.source );
 			
 			
+			public function get clients():ArrayCollection
+			{
+				return _clients;
+			}
+
+			public function set clients(value:ArrayCollection):void
+			{
+				_clients = value;
+				dataProvider = currentView == "clients" ? new ArrayCollection(clients.source):  new ArrayCollection(coins.source);
+			}
+
+			public function get coins():ArrayCollection
+			{
+				return _coins;
+			}
+
+			public function set coins(value:ArrayCollection):void
+			{
+				_coins = value;
+				dataProvider = currentView == "clients" ? new ArrayCollection(clients.source):  new ArrayCollection(coins.source);
+			}
+
 			protected function switchView(event:MouseEvent):void
 			{
 				currentView = currentView == "clients" ? "coins" : "clients"
-				dataProvider = new ArrayCollection(( modelLocator[currentView] ).source);
+				dataProvider = currentView == "clients" ? new ArrayCollection(clients.source):  new ArrayCollection(coins.source);
+				dataProvider.filterFunction = clientFilterForText;
 				dataProvider.refresh();
 			}
 			

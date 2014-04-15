@@ -9,31 +9,18 @@ package model
 	public class ModelLocator 
 	{
 		
-		private var remoteObject:RemoteObject;
+		public var remoteObject:RemoteObject;
 		public var clients:ArrayCollection = Mock.getClients();
 		public var coins:ArrayCollection = Mock.getCoins();
 		
-		public var selectedClient:ClientVO = Mock.getClientVO();
+		public var selectedClient:ClientVO;
 		public var selectedCoin:CoinVO = Mock.getCoinVO();	
 		
-		
-		public function updateClientList():void
+		public static function getClient():void
 		{
-			remoteObject.requestClients();
-		}
-		
-		protected function handleResult(event:ResultEvent):void
-		{
-			trace(event.result);
+			// TODO Auto Generated method stub
 			
 		}
-		
-		protected function handleFault(event:FaultEvent):void
-		{
-			trace(event);
-			
-		}
-		
 		
 		private static var instance:ModelLocator;
 		/**
@@ -51,13 +38,16 @@ package model
 				//throw ERROR;
 			}
 			instance = this;
-			this.remoteObject = new RemoteObject();
+			/*this.remoteObject = new RemoteObject();
 			remoteObject.destination = "MySqlRequest";
 			remoteObject.endpoint = " http://139.62.63.205/~n00648466/Amfphp/";
-			remoteObject.source = "MySqlServices";
-			remoteObject.addEventListener(ResultEvent.RESULT, handleResult);
-			remoteObject.addEventListener(FaultEvent.FAULT, handleFault);
+			remoteObject.source = "MySqlServices";	*/	
 			
+			this.remoteObject = new RemoteObject();
+			remoteObject.destination = "MySqlRequest";
+			//remoteObject.endpoint = "http://www.coin-broker.info/Amfphp/";
+			remoteObject.endpoint = "Amfphp/";
+			remoteObject.source = "MySqlServices";	
 		}
 		
 		
@@ -77,6 +67,7 @@ package model
 			}
 			return instance;
 		}
+		
 		
 		
 	}

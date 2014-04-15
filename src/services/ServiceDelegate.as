@@ -41,7 +41,7 @@ package services
 					
 				case Services.getCoins:
 				{
-					
+					remoteObject.requestCoins().addResponder(this);
 					break;
 				}
 					
@@ -104,6 +104,7 @@ package services
 		
 		public function fault(info:Object):void
 		{
+			trace(info);
 		}
 	}
 }

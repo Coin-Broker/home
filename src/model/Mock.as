@@ -46,7 +46,7 @@ package model
 			client = new ClientVO();
 			client.address = "123 Any Street" ;
 			client.city = "SomeTown" ;
-			client.firstName = "Boo" ;
+			client.firstName = "Boo2" ;
 			client.lastName = "BooWHO" ;
 			client.pinCode = "526F" ;
 			client.state = "FL" ;
@@ -55,7 +55,7 @@ package model
 			client = new ClientVO();
 			client.address = "123 Any Street" ;
 			client.city = "SomeTown" ;
-			client.firstName = "Boo" ;
+			client.firstName = "Boo3" ;
 			client.lastName = "BooWHO" ;
 			client.pinCode = "526F" ;
 			client.state = "FL" ;
@@ -64,7 +64,7 @@ package model
 			client = new ClientVO();
 			client.address = "123 Any Street" ;
 			client.city = "SomeTown" ;
-			client.firstName = "Boo" ;
+			client.firstName = "Boo4" ;
 			client.lastName = "BooWHO" ;
 			client.pinCode = "526F" ;
 			client.state = "FL" ;

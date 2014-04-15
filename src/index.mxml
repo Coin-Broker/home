@@ -13,6 +13,8 @@
 	<fx:Script>
 		<![CDATA[
 			import model.ModelLocator;
+			[Bindable]
+			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
 		]]>
 	</fx:Script>
@@ -23,10 +25,15 @@
 		<s:TabBar dataProvider="{views}"/>
 		<mx:ViewStack id="views" height="100%" width="100%" >
 			<views:MainView label="Main View" 
-							coins="{ModelLocator.getInstance().coins}"
-							clients="{ModelLocator.getInstance().clients}"/>
-			<views:ClientCoinListsView label="Client Stock Lists"/>
+							coins="{modelLocator.coins}"
+							clients="{modelLocator.clients}"
+							client="{modelLocator.selectedClient}"
+							coin="{modelLocator.selectedCoin}"/>
+			<views:ClientCoinListsView label="Client Stock Lists" 
+									   coins="{modelLocator.coins}"
+									   clients="{modelLocator.clients}"/>
 			<views:AccountManagementView label="Account Management"/>
+			<views:ReportsView label="Reports"/>
 			<views:ManagementView label="Management"/>
 		</mx:ViewStack>
 	</s:VGroup>
