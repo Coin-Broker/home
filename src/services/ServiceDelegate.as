@@ -41,16 +41,21 @@ package services
 				}
 					
 				case Services.getClient:
-				{
-					//trace("getClient Called " + params)
-					
+				{					
 					remoteObject.requestClientCoins(int(params['clientId'])).addResponder(this);
 					
 					break;
 				}
 					
-				case Services.getClient:
+				case Services.addClient:
 				{
+					var client:ClientVO = params as ClientVO;
+					/*remoteObject.addClient(client).addResponder(this);*/
+					
+					
+					remoteObject.addClient(client.firstName,
+						client.lastName, client.address, client.city, client.state, 
+						client.phone, client.accountBalance, client.pinCode).addResponder(this);
 					
 					break;
 				}

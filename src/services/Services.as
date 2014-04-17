@@ -8,5 +8,6 @@ package services
 		public static  var getClient:String = "GetClient";
 		public static  var getCoin:String = "GetCoin";
 		public static var getcomissionRate:String = "GetComissionRate";
+		public static var addClient:String = "AddClient";
 	}
 }

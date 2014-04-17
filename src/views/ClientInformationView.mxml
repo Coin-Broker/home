@@ -6,6 +6,7 @@
 	
 	<fx:Declarations>
 		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99"/> 
+		<mx:PhoneNumberValidator source="{phoneInput.inputField}" property="text"/>
 	</fx:Declarations>
 	
 	<fx:Script>
@@ -71,9 +72,10 @@
 								   value="{client.state}"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
-			<components:HNameValueLabel label="Phone: "
-								   editable="{editing}"
-								   value="{client.phone}"/>
+			<components:HNameValueLabel id="phoneInput" 
+										label="Phone: "
+								  		editable="{editing}"
+								   		value="{client.phone}"/>
 			<s:Spacer width="100%"/>
 			<components:HNameValueLabel label="Balance: "
 								   editable="{editing}"

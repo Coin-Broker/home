@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" 
+		  xmlns:components="components.*"
+		  height="100%" width="100%" >
+	
+	<fx:Declarations>
+		<mx:PhoneNumberValidator source="{phoneInput.inputField}" property="text"/>
+		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99"/> 
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			import model.ClientVO;
+			
+			import services.ServiceDelegate;
+			import services.Services;
+			protected function addClient(event:MouseEvent):void
+			{
+				var client:ClientVO = new ClientVO();
+				client.firstName = fName.inputValue;
+				client.lastName = lName.inputValue;
+				client.phone = phoneInput.inputValue;
+				client.address = address.inputValue;
+				client.city = city.inputValue;
+				client.state = state.inputValue;
+				client.pinCode = pin.inputValue;
+				client.accountBalance = Number(dollarAmount.text);
+				
+				new ServiceDelegate(Services.addClient, null, client);
+				
+			}
+		]]>
+	</fx:Script>
+	<s:Rect id="background" height="100%" width="100%">
+		<s:fill>
+			<s:SolidColor color="#cccccc"/>
+		</s:fill>
+	</s:Rect>
+	<s:VGroup left="10" right="10" top="10" bottom="10">
+		<s:Label text="New Client" fontWeight="bold" fontSize="16" />
+		<s:HGroup width="100%" >
+			<components:HNameValueLabel id="fName" 
+										label="First Name: " 
+										editable="true"/>
+			<s:Spacer width="100%"/>
+			<components:HNameValueLabel id="lName" 
+										label="Last Name: " 
+										editable="true"/>
+			<s:Spacer width="100%"/>
+			<components:HNameValueLabel id="phoneInput" 
+										label="Phone: " 
+										editable="true"/>
+
+			
+		</s:HGroup>
+		<s:HGroup width="100%">
+			<components:HNameValueLabel id="address" 
+										label="Address: "  editable="true"/>
+			<s:Spacer width="100%"/>			
+			<components:HNameValueLabel id="city" 
+										label="City: " editable="true"/>
+			<s:Spacer width="100%"/>			
+			<components:HNameValueLabel id="state" 
+										label="State: " editable="true"/>
+			<s:Spacer width="100%"/>
+			<components:HNameValueLabel id="pin" 
+										label="PIN: " editable="true"/>
+		</s:HGroup>
+
+		<s:TextInput  id="dollarAmount" 
+					  prompt="Starting Account Balance" 
+						 width="200"
+						 restrict="[0-9.]"/>
+
+		
+		
+		
+		
+		<s:HGroup width="100%">
+			<s:Button label="Add Client" click="addClient(event)"/>			
+		</s:HGroup>
+	</s:VGroup>
+	
+</s:Group>

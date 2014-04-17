@@ -16,8 +16,9 @@
 		]]>
 	</fx:Script>
 	
+	<views:AddClientView />
 						
-	<s:VGroup>
+<!--	<s:VGroup>
 		<s:HGroup>
 			<s:Label text="ID: "/>
 			<s:Label text="cID"/>
@@ -36,5 +37,5 @@
 			<s:Label text="PIN: "/>
 			<s:Label text="cPIN"/>
 		</s:HGroup>
-	</s:VGroup>
+	</s:VGroup>-->
 </s:NavigatorContent >

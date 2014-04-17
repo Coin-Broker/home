@@ -29,8 +29,13 @@
 				inputField.setStyle("contentBackgroundAlpha", editable?1:0);				
 			}
 			
+			public function get inputValue():String
+			{
+				return inputField.text;
+			}
+			
 		]]>
 	</fx:Script>
 	<s:Label text="{label}" fontWeight="bold" />
-	<s:TextInput id="inputField"  text="{value}" editable="{editable}"/>
+	<s:TextInput id="inputField"  text="{value}" editable="{editable}" restrict="[a-zA-Z0-9\-)(]"/>
 </s:HGroup>
