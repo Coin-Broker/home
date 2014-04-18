@@ -6,6 +6,7 @@ package services
 	import mx.rpc.remoting.RemoteObject;
 	
 	import model.ClientVO;
+	import model.CoinVO;
 	import model.ModelLocator;
 	
 	public class ServiceDelegate implements IResponder
@@ -81,6 +82,26 @@ package services
 					break;
 				}
 					
+				case Services.getCoin:	
+				{				
+					remoteObject.getTodaysCoinRecords(params['symbol']).addResponder(this);
+					break;
+				}
+					
+				case Services.getCurrentHoldings:	
+				{				
+					remoteObject.getHoldingsByStock().addResponder(this);
+					break;
+				}
+					
+				case Services.getCurrentCashHoldings:	
+				{				
+					remoteObject.getCashHeld().addResponder(this);
+					break;
+				}
+					
+					
+		
 				default:
 				{
 					break;
@@ -132,6 +153,17 @@ package services
 					break;
 				}
 					
+				case "selectedCoin":
+				{
+					var coin:CoinVO = new CoinVO();
+					coin.symbol = params['symbol'];
+					coin.name = params['name'];
+					coin.priceHistory = new ArrayCollection((data as ResultEvent).result as Array);
+					coin.price = coin.priceHistory.getItemAt(coin.priceHistory.length - 1)['price'];					
+					modelLocator.selectedCoin = coin;
+					break;
+				}
+					
 				case "lockedAccounts":
 				{
 					collection = new ArrayCollection( );
@@ -145,6 +177,18 @@ package services
 					modelLocator.commissionRate = collection.getItemAt(0)['value'];
 					break;
 				}	
+					
+				case "currentHoldings":
+				{
+					modelLocator.currentHoldings = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}	
+					
+				case "cashOnHand":
+				{
+					modelLocator.cashOnHand = Number((data as ResultEvent).result);
+					break;
+				}
 					
 				default:
 				{

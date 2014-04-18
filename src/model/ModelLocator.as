@@ -13,11 +13,16 @@ package model
 		public var coins:ArrayCollection;
 		
 		public var selectedClient:ClientVO;
-		public var selectedCoin:CoinVO = Mock.getCoinVO();	
+		public var selectedCoin:CoinVO ;
 		
 		public var lockedAccounts:ArrayCollection = new ArrayCollection();
+		public var currentHoldings:ArrayCollection = new ArrayCollection();
 		
 		public var commissionRate:Number;
+		
+		public var currentView:int;
+		
+		public var cashOnHand:Number;
 		
 		
 		private static var instance:ModelLocator;

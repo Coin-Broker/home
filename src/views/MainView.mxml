@@ -43,7 +43,7 @@
 			
 			protected function selectCoin(event:GridSelectionEvent):void
 			{				
-				//new ServiceDelegate(Services.getCoin, "selectedCoin", clientSearchGrid.selectedItem);
+				new ServiceDelegate(Services.getCoin, "selectedCoin", coinSearchGrid.selectedItem);
 				
 			}
 						
@@ -52,6 +52,8 @@
 				new ServiceDelegate(Services.getClients, "clients", null);	
 				new ServiceDelegate(Services.getCoins, "coins", null);				
 				new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
+				new ServiceDelegate(Services.getCurrentHoldings, "currentHoldings", null);
+				new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
 			}
 			
 		]]>

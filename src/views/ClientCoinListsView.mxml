@@ -6,20 +6,29 @@
 	
 	
 	<fx:Declarations>
-		
+		<s:NumberFormatter id="currencyFormater" fractionalDigits="2" />
 	</fx:Declarations>
 	
 	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			
-			import model.ModelLocator;	
+			import spark.events.GridSelectionEvent;
+			
+			import model.ModelLocator;
+			
+			import services.ServiceDelegate;
+			import services.Services;	
 			[Bindable]
 			public var modelLocator:ModelLocator = ModelLocator.getInstance();
 			
 			[Bindable]
 			private var clientSize:int
+			
+			[Bindable]
+			public  var cash:Number
 			
 			[Bindable]
 			public var currentView:String = "clients";
@@ -59,6 +68,17 @@
 				currentView = currentView == "clients" ? "coins" : "clients"
 				dataProvider = currentView == "clients" ? new ArrayCollection(clients.source):  new ArrayCollection(coins.source);
 			}			
+			
+			protected function dataGridClicked(event:MouseEvent):void
+			{		
+				if(currentView == 'clients')
+				{
+					new ServiceDelegate(Services.getClient, "selectedClient", dateGrid.selectedItem);
+					modelLocator.currentView = 0;
+				}
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -70,12 +90,16 @@
 					  click="switchView(event)"/>
 			<s:Label text="{'Total of ' + clientSize + ' Clients'}"
 					 visible="{currentView == 'clients'}"/>
+			
+			<s:Label text="{'Total Cash On Hand is  ' + currencyFormater.format(cash) + ' Dollars'}"
+					 visible="{currentView != 'clients'}"/>
 		</s:HGroup>
 				
 		
-		<components:DataGirdWithSearch 
-			dataProvider="{dataProvider}"
-			prompt="{(currentView == 'clients' ? 'Client Search' : 'Coin Search')}">
+		<components:DataGirdWithSearch id="dateGrid" doubleClickEnabled="true"  
+									   doubleClick="dataGridClicked(event)"
+									   dataProvider="{dataProvider}"
+									   prompt="{(currentView == 'clients' ? 'Client Search' : 'Coin Search')}">
 			
 		</components:DataGirdWithSearch>
 

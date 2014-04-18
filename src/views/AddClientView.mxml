@@ -12,12 +12,23 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
+			
 			import model.ClientVO;
 			
 			import services.ServiceDelegate;
 			import services.Services;
 			protected function addClient(event:MouseEvent):void
 			{
+				if(fName.value == "" || lName.value == "" ||  phoneInput.value == "" ||  
+					address.value == "" ||  city.value == "" ||  state.value == "" ||  
+					pin.value == "" || fName.value == null || lName.value == null ||  phoneInput.value == null ||  
+					address.value == null ||  city.value == null ||  state.value == null ||  
+					pin.value == null)
+				{
+					Alert.show("missing Data");
+					return;
+				}
 				var client:ClientVO = new ClientVO();
 				client.firstName = fName.inputValue;
 				client.lastName = lName.inputValue;
@@ -31,6 +42,7 @@
 				new ServiceDelegate(Services.addClient, null, client);
 				
 			}
+
 		]]>
 	</fx:Script>
 	<s:Rect id="background" height="100%" width="100%">
@@ -79,7 +91,7 @@
 		
 		
 		<s:HGroup width="100%">
-			<s:Button label="Add Client" click="addClient(event)"/>			
+			<s:Button label="Add Client" click="addClient(event)" />			
 		</s:HGroup>
 	</s:VGroup>
 	

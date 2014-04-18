@@ -12,5 +12,7 @@ package services
 		public static var getLockedAccounts:String = "GetLockedAccounts";
 		public static var addSubFunds:String = "AddSubFunds";
 		public static var addTransaction:String = "AddTransaction";
+		public static var getCurrentHoldings:String = "getCurrentHoldings";
+		public static var getCurrentCashHoldings:String = "getCurrentCashHoldings";
 	}
 }

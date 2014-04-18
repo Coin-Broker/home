@@ -15,6 +15,13 @@
 			
 			[Bindable]
 			public var coin:CoinVO;
+			
+			public function dateParseFunction(s:String):Date { 
+				var tokens:Array = s.split(/[: -]/);
+				var newDate:Date = new Date()
+				newDate.setTime(Date.UTC(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]));
+				return newDate;
+			}
 		]]>
 	</fx:Script>
 	
@@ -39,13 +46,16 @@
 		</s:HGroup>
 		<mx:LineChart id="chart"
 					  height="100%" width="100%" 
-					  dataProvider="{new ArrayCollection()}" 
+					  dataProvider="{coin.priceHistory}" 
 					  showDataTips="true">
 			<mx:horizontalAxis>
-				<mx:DateTimeAxis />
+				<mx:DateTimeAxis parseFunction="dateParseFunction" />
 			</mx:horizontalAxis>
+			<mx:verticalAxis>
+				<mx:LinearAxis baseAtZero="true" />
+			</mx:verticalAxis>
 			<mx:series>
-				<mx:LineSeries yField="cost" displayName="Profit"/>
+				<mx:LineSeries yField="price" displayName="price" xField="date"/>
 			</mx:series>
 			
 		</mx:LineChart>
