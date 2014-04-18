@@ -1,26 +1,24 @@
 package model
 {
 	import mx.collections.ArrayCollection;
-	import mx.rpc.events.FaultEvent;
-	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.RemoteObject;
 
 	[Bindable]
 	public class ModelLocator 
 	{
+		public var currentUser:UserVO = new UserVO();
 		
 		public var remoteObject:RemoteObject;
-		public var clients:ArrayCollection = Mock.getClients();
-		public var coins:ArrayCollection = Mock.getCoins();
+		public var clients:ArrayCollection;
+		public var coins:ArrayCollection;
 		
 		public var selectedClient:ClientVO;
 		public var selectedCoin:CoinVO = Mock.getCoinVO();	
 		
-		public static function getClient():void
-		{
-			// TODO Auto Generated method stub
-			
-		}
+		public var lockedAccounts:ArrayCollection = new ArrayCollection();
+		
+		public var commissionRate:Number;
+		
 		
 		private static var instance:ModelLocator;
 		/**

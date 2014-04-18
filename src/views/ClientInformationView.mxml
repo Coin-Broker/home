@@ -5,18 +5,24 @@
 		 height="100%" width="100%" xmlns:local="*" xmlns:components="components.*" >
 	
 	<fx:Declarations>
-		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99"/> 
+		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99" required="false"/> 
 		<mx:PhoneNumberValidator source="{phoneInput.inputField}" property="text"/>
+		<s:NumberFormatter id="currencyFormatter" fractionalDigits="2" />
 	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
 			import mx.utils.ObjectUtil;
 			
 			import spark.events.TextOperationEvent;
 			
 			import model.ClientVO;
+			import model.ModelLocator;
+			
+			import services.ServiceDelegate;
+			import services.Services;
 			
 			private var _client:ClientVO; 
 			[Bindable]
@@ -40,6 +46,49 @@
 					clientCoins = null;
 			}
 
+			protected function subFunds(event:MouseEvent):void
+			{
+				if(client.accountBalance < Number(dollarAmount.text))
+				{
+					Alert.show("Error not enough funds");
+					return;
+				}
+				
+				var params:* = new Object();
+				params["clientId"]  = client.id;
+				params["amount"] = -Number(dollarAmount.text);
+				params["coin"] = "Balance";
+				params["numberShares"] = params["amount"];
+				params["pricePerShare"] = 1
+				params["commisionAmount"] = 0;
+				params["brokerID"] = ModelLocator.getInstance().currentUser.id;
+					
+				
+				new ServiceDelegate(Services.addSubFunds, null, params);
+				new ServiceDelegate(Services.addTransaction, null, params);
+				
+				client.accountBalance -= Number(dollarAmount.text);
+				
+			}
+			
+			protected function addFunds(event:MouseEvent):void
+			{
+				var params:* = new Object();
+				params["clientId"]  = client.id;
+				params["amount"] = Number(dollarAmount.text);
+				params["coin"] = "Balance";
+				params["numberShares"] = 0;
+				params["pricePerShare"] = 1;
+				params["commisionAmount"] = 0;
+				params["brokerID"] = ModelLocator.getInstance().currentUser.id;
+					
+				new ServiceDelegate(Services.addSubFunds, null, params);
+				new ServiceDelegate(Services.addTransaction, null, params);
+				
+				client.accountBalance += Number(dollarAmount.text);
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -78,8 +127,8 @@
 								   		value="{client.phone}"/>
 			<s:Spacer width="100%"/>
 			<components:HNameValueLabel label="Balance: "
-								   editable="{editing}"
-								   value="{client.accountBalance}"/>
+								   editable="false"
+								   value="{currencyFormatter.format(client.accountBalance)}"/>
 			<s:Spacer width="100%"/>
 			<components:HNameValueLabel label="PIN: "
 								   editable="{editing}"
@@ -87,17 +136,18 @@
 		</s:HGroup>
 		<s:HGroup width="100%" verticalAlign="middle">
 			<s:Label text="Number of Shares: " fontWeight="bold"/>
-			<s:TextInput prompt="Number of shares" width="33%" restrict="[0-9]"/>
+			<s:TextInput prompt="Number of shares" width="33%" restrict="[0-9]" editable="{client != null}"/>
 			<s:Button label="Buy" width="33%"/>
 			<s:Button label="Sell" width="33%"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
 			<s:TextInput prompt="Amount to Withdraw or Add" 
+						 editable="{client != null}"
 						 id="dollarAmount"
 						 width="33%"
 						 restrict="[0-9.]"/>
-			<s:Button label="Add Funds" width="33%"/>
-			<s:Button label="Withdraw Funds" width="33%" />
+			<s:Button label="Add Funds" width="33%" click="addFunds(event)"/>
+			<s:Button label="Withdraw Funds" width="33%" click="subFunds(event)" />
 		</s:HGroup>
 		<s:HGroup width="100%">
 			<s:Button label="{editing? 'Save' : 'Update Info'}" click="{editing=!editing}"/>			

@@ -50,8 +50,7 @@
 			protected function init(event:FlexEvent):void
 			{
 				new ServiceDelegate(Services.getClients, "clients", null);	
-				new ServiceDelegate(Services.getCoins, "coins", null);
-				
+				new ServiceDelegate(Services.getCoins, "coins", null);				
 				new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
 			}
 			

@@ -43,20 +43,41 @@ package services
 				case Services.getClient:
 				{					
 					remoteObject.requestClientCoins(int(params['clientId'])).addResponder(this);
-					
 					break;
 				}
 					
+
 				case Services.addClient:
 				{
-					var client:ClientVO = params as ClientVO;
-					/*remoteObject.addClient(client).addResponder(this);*/
-					
-					
+					var client:ClientVO = params as ClientVO;				
 					remoteObject.addClient(client.firstName,
 						client.lastName, client.address, client.city, client.state, 
 						client.phone, client.accountBalance, client.pinCode).addResponder(this);
+					break;
+				}
 					
+					
+				case Services.getLockedAccounts:	
+				{					
+					remoteObject.getLockedAccounts().addResponder(this);
+					break;
+				}	
+					
+				case Services.addSubFunds:	
+				{					
+					remoteObject.addSubClientFunds(params["clientId"], params["amount"]).addResponder(this);
+					break;
+				}	
+					
+				case Services.getcomissionRate:	
+				{				
+					remoteObject.getCommissionRate().addResponder(this);
+					break;
+				}
+					
+				case Services.addTransaction:	
+				{				
+					remoteObject.addTransaction(params['clientId'], params['amount'], params['coin'], params['numberShares'], params['pricePerShare'], params['commisionAmount'], params['brokerID']).addResponder(this);
 					break;
 				}
 					
@@ -110,6 +131,20 @@ package services
 					modelLocator.selectedClient = client;
 					break;
 				}
+					
+				case "lockedAccounts":
+				{
+					collection = new ArrayCollection( );
+					modelLocator.lockedAccounts = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}	
+					
+				case "comissionRate":
+				{
+					collection = new ArrayCollection((data as ResultEvent).result as Array);
+					modelLocator.commissionRate = collection.getItemAt(0)['value'];
+					break;
+				}	
 					
 				default:
 				{

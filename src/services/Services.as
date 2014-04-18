@@ -9,5 +9,8 @@ package services
 		public static  var getCoin:String = "GetCoin";
 		public static var getcomissionRate:String = "GetComissionRate";
 		public static var addClient:String = "AddClient";
+		public static var getLockedAccounts:String = "GetLockedAccounts";
+		public static var addSubFunds:String = "AddSubFunds";
+		public static var addTransaction:String = "AddTransaction";
 	}
 }

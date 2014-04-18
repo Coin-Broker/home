@@ -3,7 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx" 
 					xmlns:views="views.*"
-					height="100%" width="100%" >
+					height="100%" width="100%" xmlns:components="components.*" >
 					
 	<fx:Declarations>
 		
@@ -12,13 +12,26 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.collections.ArrayCollection;
+			[Bindable]
+			public var lockedUsers:ArrayCollection;
+			[Bindable]
+			public var commissionRate:Number;
 			
 		]]>
 	</fx:Script>
 	
 	<s:VGroup>
 		<s:Label text="what can a manager do ?"/>
-		<s:Label text="setCommission Rate"/>	
+		<s:Label text="{commissionRate}"/>	
+		<components:DataGirdWithSearch dataProvider="{lockedUsers}">
+			<components:columns>
+				<s:ArrayList>
+					<s:GridColumn  dataField="screenName" headerText="Screen Name"/>
+					<s:GridColumn dataField="password" headerText="Password"/>
+				</s:ArrayList>
+			</components:columns>	
+		</components:DataGirdWithSearch>
 	</s:VGroup>
 		
 

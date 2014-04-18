@@ -28,7 +28,7 @@
 			private var _coins:ArrayCollection;// =
 			
 			[Bindable]
-			public var dataProvider:ArrayCollection = new ArrayCollection( modelLocator.clients.source );
+			public var dataProvider:ArrayCollection = new ArrayCollection();;
 			
 			
 			public function get clients():ArrayCollection
