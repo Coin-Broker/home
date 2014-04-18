@@ -100,6 +100,11 @@ package services
 					break;
 				}
 					
+				case Services.sellStock:	
+				{				
+					remoteObject.buySellCoin(params['clientId'],  params['coinSymbol'], params['numberOfShares'], params['price']).addResponder(this);
+					break;
+				}					
 					
 		
 				default:

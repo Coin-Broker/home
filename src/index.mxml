@@ -46,7 +46,7 @@
 									   clients="{modelLocator.clients}"
 									   cash="{modelLocator.cashOnHand}"/>
 			<views:AccountManagementView label="Account Management"/>
-			<views:ReportsView label="Reports"/>
+			<views:ReportsView label="Reports" transactions="{modelLocator.transactions}"/>
 			<views:ManagementView label="Management" 
 								  lockedUsers="{modelLocator.lockedAccounts}" 
 								  commissionRate="{modelLocator.commissionRate}"/>

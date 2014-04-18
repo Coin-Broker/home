@@ -17,6 +17,8 @@ package model
 		
 		public var lockedAccounts:ArrayCollection = new ArrayCollection();
 		public var currentHoldings:ArrayCollection = new ArrayCollection();
+		public var transactions:ArrayCollection = new ArrayCollection();
+		
 		
 		public var commissionRate:Number;
 		
@@ -48,8 +50,9 @@ package model
 			
 			this.remoteObject = new RemoteObject();
 			remoteObject.destination = "MySqlRequest";
-			//remoteObject.endpoint = "http://www.coin-broker.info/Amfphp/";
-			remoteObject.endpoint = "Amfphp/";
+			remoteObject.endpoint = "http://50.159.170.159/Amfphp/";
+			//remoteObject.endpoint = "Amfphp/";
+
 			remoteObject.source = "MySqlServices";	
 		}
 		

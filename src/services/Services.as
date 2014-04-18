@@ -14,5 +14,7 @@ package services
 		public static var addTransaction:String = "AddTransaction";
 		public static var getCurrentHoldings:String = "getCurrentHoldings";
 		public static var getCurrentCashHoldings:String = "getCurrentCashHoldings";
+		
+		public static var sellStock:String = "sellStock";
 	}
 }

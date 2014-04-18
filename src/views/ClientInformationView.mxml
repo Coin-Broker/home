@@ -89,6 +89,30 @@
 				
 			}
 			
+			protected function buyStock(event:MouseEvent):void
+			{
+				var params:* = new Object();
+				params["clientId"]  = client.id;
+				params["numberOfShares"] = Number(numShares.text);
+				params["coinSymbol"] = ModelLocator.getInstance().selectedCoin.symbol;
+				params["price"] = ModelLocator.getInstance().selectedCoin.price;
+				
+				new ServiceDelegate(Services.sellStock, null, params);
+				
+			}
+			
+			protected function sellStock(event:MouseEvent):void
+			{
+				var params:* = new Object();
+				params["clientId"]  = client.id;
+				params["numberOfShares"] = -Number(numShares.text);
+				params["coinSymbol"] = ModelLocator.getInstance().selectedCoin.symbol;
+				params["price"] = ModelLocator.getInstance().selectedCoin.price;
+				
+				new ServiceDelegate(Services.sellStock, null, params);
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -136,9 +160,9 @@
 		</s:HGroup>
 		<s:HGroup width="100%" verticalAlign="middle">
 			<s:Label text="Number of Shares: " fontWeight="bold"/>
-			<s:TextInput prompt="Number of shares" width="33%" restrict="[0-9]" editable="{client != null}"/>
-			<s:Button label="Buy" width="33%"/>
-			<s:Button label="Sell" width="33%"/>
+			<s:TextInput id="numShares" prompt="Number of shares" width="33%" restrict="[0-9]" editable="{client != null}"/>
+			<s:Button label="Buy" width="33%" click="buyStock(event)"/>
+			<s:Button label="Sell" width="33%" click="sellStock(event)"/>
 		</s:HGroup>
 		<s:HGroup width="100%">
 			<s:TextInput prompt="Amount to Withdraw or Add" 
