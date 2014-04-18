@@ -48,8 +48,8 @@ package model
 			
 			this.remoteObject = new RemoteObject();
 			remoteObject.destination = "MySqlRequest";
-			remoteObject.endpoint = "http://www.coin-broker.info/Amfphp/";
-			//remoteObject.endpoint = "Amfphp/";
+			//remoteObject.endpoint = "http://www.coin-broker.info/Amfphp/";
+			remoteObject.endpoint = "Amfphp/";
 			remoteObject.source = "MySqlServices";	
 		}
 		

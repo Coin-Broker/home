@@ -22,13 +22,12 @@
 	</fx:Script>
 	
 	<s:VGroup>
-		<s:Label text="what can a manager do ?"/>
 		<s:Label text="{commissionRate}"/>	
+		<s:Label text="List of Locked Accounts" />
 		<components:DataGirdWithSearch dataProvider="{lockedUsers}">
 			<components:columns>
 				<s:ArrayList>
 					<s:GridColumn  dataField="screenName" headerText="Screen Name"/>
-					<s:GridColumn dataField="password" headerText="Password"/>
 				</s:ArrayList>
 			</components:columns>	
 		</components:DataGirdWithSearch>

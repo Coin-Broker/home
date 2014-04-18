@@ -15,8 +15,6 @@
 			
 		]]>
 	</fx:Script>
-	
 
-			<s:Label text="REports"/>
 
 </s:NavigatorContent >
