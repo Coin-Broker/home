@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
-		 xmlns:s="library://ns.adobe.com/flex/spark" 
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009"
+		 xmlns:s="library://ns.adobe.com/flex/spark"
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
-		 height="100%" width="100%" xmlns:local="*" xmlns:components="components.*" >
+		 xmlns:local="*"
+		 xmlns:components="components.*"
+		 width="100%" height="100%">
 	
 	<fx:Declarations>
-		<s:NumberValidator source="{dollarAmount}" property="text" maxValue="9999999.99" required="false"/> 
-		<mx:PhoneNumberValidator source="{phoneInput.inputField}" property="text"/>
-		<s:NumberFormatter id="currencyFormatter" fractionalDigits="2" />
+		<s:NumberValidator maxValue="9999999.99" property="text" required="false"
+						   source="{dollarAmount}"/> 
+		<mx:PhoneNumberValidator property="text" source="{phoneInput.inputField}"/>
+		<s:NumberFormatter id="currencyFormatter" fractionalDigits="2"/>
+		<s:NumberFormatter id="basisFormatter" fractionalDigits="5"/>
 	</fx:Declarations>
 	
 	<fx:Script>
@@ -19,6 +23,7 @@
 			import spark.events.TextOperationEvent;
 			
 			import model.ClientVO;
+			import model.CoinVO;
 			import model.ModelLocator;
 			
 			import services.ServiceDelegate;
@@ -55,140 +60,193 @@
 				}
 				
 				var params:* = new Object();
-				params["clientId"]  = client.id;
 				params["amount"] = -Number(dollarAmount.text);
-				params["coin"] = "Balance";
-				params["numberShares"] = params["amount"];
-				params["pricePerShare"] = 1
-				params["commisionAmount"] = 0;
-				params["brokerID"] = ModelLocator.getInstance().currentUser.id;
-					
-				
-				new ServiceDelegate(Services.addSubFunds, null, params);
-				new ServiceDelegate(Services.addTransaction, null, params);
-				
-				client.accountBalance -= Number(dollarAmount.text);
-				
+				addSubFunds(params);				
 			}
 			
 			protected function addFunds(event:MouseEvent):void
 			{
-				var params:* = new Object();
-				params["clientId"]  = client.id;
+				var params:* = new Object();				
 				params["amount"] = Number(dollarAmount.text);
+				addSubFunds(params);
+				
+			}
+			
+			protected function addSubFunds(params:Object):void
+			{
+				params["clientId"]  = client.id;
 				params["coin"] = "Balance";
 				params["numberShares"] = 0;
 				params["pricePerShare"] = 1;
 				params["commisionAmount"] = 0;
 				params["brokerID"] = ModelLocator.getInstance().currentUser.id;
-					
+				
 				new ServiceDelegate(Services.addSubFunds, null, params);
 				new ServiceDelegate(Services.addTransaction, null, params);
 				
-				client.accountBalance += Number(dollarAmount.text);
-				
+				client.accountBalance += params["amount"];
+				dollarAmount.text = "" ;
 			}
 			
 			protected function buyStock(event:MouseEvent):void
 			{
 				var params:* = new Object();
-				params["clientId"]  = client.id;
-				params["numberOfShares"] = Number(numShares.text);
-				params["coinSymbol"] = ModelLocator.getInstance().selectedCoin.symbol;
-				params["price"] = ModelLocator.getInstance().selectedCoin.price;
-				
-				new ServiceDelegate(Services.sellStock, null, params);
+				params["numberOfShares"] = int(numShares.text);
+				buySellStock(params);
 				
 			}
 			
 			protected function sellStock(event:MouseEvent):void
 			{
+				
+				var found:Boolean = false;
+				var coinVO:CoinVO =  ModelLocator.getInstance().selectedCoin;
+				if(coinVO == null)
+				{
+					Alert.show("Please select a coin");
+					return;
+				}
+				for each (var coin:Object in client.coins) 
+				{
+					
+					if(coin['symbol'] == coinVO.symbol )
+					{
+						found = true;
+						if(	coin['count'] < Number(numShares.text))
+						{
+							Alert.show("Error not enough Stocks");
+							return;
+						}
+					}
+					
+					
+				}
+				if(!found)
+				{
+					Alert.show("Stock not owned");
+					return;
+				}
+
 				var params:* = new Object();
+				params["numberOfShares"] = -int(numShares.text);
+				buySellStock(params);
+
+				
+			}
+			
+			protected function buySellStock(params:Object):void
+			{
+				var coinVO:CoinVO =  ModelLocator.getInstance().selectedCoin;
+				if(coinVO == null)
+				{
+					Alert.show("Please select a coin");
+					return;
+				}
 				params["clientId"]  = client.id;
-				params["numberOfShares"] = -Number(numShares.text);
-				params["coinSymbol"] = ModelLocator.getInstance().selectedCoin.symbol;
+				params["coinSymbol"] = coinVO.symbol;
 				params["price"] = ModelLocator.getInstance().selectedCoin.price;
 				
 				new ServiceDelegate(Services.sellStock, null, params);
 				
 			}
 			
+			protected function updateClient(event:MouseEvent):void
+			{
+				if(client == null)
+					return;
+				
+				if(client.firstName == "" || client.lastName == "" ||  client.phone == "" ||  
+					client.address == "" ||  client.city == "" ||  client.state == "" ||  
+					client.pinCode == "" ||  client.phone.length < 10)
+				{
+					Alert.show("Missing or Invalid Data");
+					return;
+				}
+				editing=!editing;
+				if(!editing)
+					new ServiceDelegate(Services.updateClient, null, client);
+			}
+			
 		]]>
 	</fx:Script>
 	
-	<s:Rect id="background" height="100%" width="100%">
+	<s:Rect id="background" width="100%" height="100%">
 		<s:fill>
 			<s:SolidColor color="#cccccc"/>
 		</s:fill>
 	</s:Rect>
-	<s:VGroup height="100%" width="100%"
-			  left="10" right="10" top="10" bottom="10">
-		<s:HGroup width="100%" >
-			<components:HNameValueLabel label="ID: " 
-								   value="{client.id}"/>
-			<s:Spacer width="100%"/>
-			<components:HNameValueLabel label="Name: "
-								   editable="{editing}"
-								   value="{client.firstName + ' ' + client.lastName}"/>
-		</s:HGroup>
-		<s:HGroup width="100%">
-			<components:HNameValueLabel label="Address: " 
-								   editable="{editing}"
-								   value="{client.address}"/>
-			<s:Spacer width="100%"/>			
-			<components:HNameValueLabel label="City: "
-								   editable="{editing}"
-								   value="{client.city}"/>
-			<s:Spacer width="100%"/>			
-			<components:HNameValueLabel label="State: "
-								   editable="{editing}"
-								   value="{client.state}"/>
-		</s:HGroup>
-		<s:HGroup width="100%">
-			<components:HNameValueLabel id="phoneInput" 
-										label="Phone: "
-								  		editable="{editing}"
-								   		value="{client.phone}"/>
-			<s:Spacer width="100%"/>
-			<components:HNameValueLabel label="Balance: "
-								   editable="false"
-								   value="{currencyFormatter.format(client.accountBalance)}"/>
-			<s:Spacer width="100%"/>
-			<components:HNameValueLabel label="PIN: "
-								   editable="{editing}"
-								   value="{client.pinCode}"/>
-		</s:HGroup>
-		<s:HGroup width="100%" verticalAlign="middle">
-			<s:Label text="Number of Shares: " fontWeight="bold"/>
-			<s:TextInput id="numShares" prompt="Number of shares" width="33%" restrict="[0-9]" editable="{client != null}"/>
-			<s:Button label="Buy" width="33%" click="buyStock(event)"/>
-			<s:Button label="Sell" width="33%" click="sellStock(event)"/>
-		</s:HGroup>
-		<s:HGroup width="100%">
-			<s:TextInput prompt="Amount to Withdraw or Add" 
-						 editable="{client != null}"
-						 id="dollarAmount"
-						 width="33%"
-						 restrict="[0-9.]"/>
-			<s:Button label="Add Funds" width="33%" click="addFunds(event)"/>
-			<s:Button label="Withdraw Funds" width="33%" click="subFunds(event)" />
-		</s:HGroup>
-		<s:HGroup width="100%">
-			<s:Button label="{editing? 'Save' : 'Update Info'}" click="{editing=!editing}"/>			
-		</s:HGroup>
+	<s:VGroup width="100%" height="100%">
 		
-		<components:DataGirdWithSearch dataProvider="{clientCoins}" prompt="Coin Search" >			
-			<components:columns>
-				<s:ArrayList>
-					<s:GridColumn dataField="name" headerText="Coin"/>
-					<s:GridColumn dataField="symbol" headerText="Symbol"/>
-					<s:GridColumn dataField="count" headerText="Quanity"/>
-					<s:GridColumn dataField="basis" headerText="Basis"/>
-				</s:ArrayList>
-			</components:columns>
-		</components:DataGirdWithSearch>
 
+	<s:HGroup width="100%" height="100%">
+
+		<s:VGroup left="10" right="10" top="10" bottom="10" width="100%" height="100%">
+			<s:HGroup width="100%">
+				<components:HNameValueLabel label="ID: " value="{client.id}"/>
+				<s:Spacer width="100%"/>
+				<components:HNameValueLabel label="PIN: " editable="{editing}"
+											value="@{client.pinCode}"/>
+				
+
+			</s:HGroup>
+			<s:HGroup>
+				<components:HNameValueLabel label="First Name: " editable="{editing}"
+											value="@{client.firstName}"/>
+				<s:Spacer width="100%"/>
+				<components:HNameValueLabel label="Last Name: " editable="{editing}"
+											value="@{client.lastName}"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<components:HNameValueLabel label="Address: " editable="{editing}"
+											value="@{client.address}"/>
+							
+				<components:HNameValueLabel label="City: " editable="{editing}"
+											value="@{client.city}"/>
+			</s:HGroup>	
+			<s:HGroup>
+				<components:HNameValueLabel label="State: " editable="{editing}"
+											value="@{client.state}"/>
+			
+				<s:Spacer width="100%"/>
+				<components:HNameValueLabel id="phoneInput" label="Phone: " editable="{editing}"
+											value="@{client.phone}"/>
+			</s:HGroup>	
+			<s:HGroup>
+				<components:HNameValueLabel label="Balance: " editable="false"
+											value="{currencyFormatter.format(client.accountBalance)}"/>
+
+			</s:HGroup>
+			<s:HGroup width="100%" verticalAlign="middle">
+				<s:Label fontWeight="bold" text="Number of Shares: "/>
+				<s:TextInput id="numShares" width="33%" editable="{client != null}"
+							 prompt="Number of shares" restrict="[0-9]"/>
+				<s:Button width="33%" label="Buy" click="buyStock(event)"/>
+				<s:Button width="33%" label="Sell" click="sellStock(event)"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:TextInput id="dollarAmount" width="33%" editable="{client != null}"
+							 prompt="Amount to Withdraw or Add" restrict="[0-9.]"/>
+				<s:Button width="33%" label="Add Funds" click="addFunds(event)"/>
+				<s:Button width="33%" label="Withdraw Funds" click="subFunds(event)"/>
+			</s:HGroup>
+			<s:HGroup width="100%">
+				<s:Button label="{editing? 'Save' : 'Update Info'}" click="updateClient(event)"/>			
+			</s:HGroup>
+		</s:VGroup >	
+			<components:DataGirdWithSearch width="100%" dataProvider="{clientCoins}"
+										   prompt="Coin Search">			
+				<components:columns>
+					<s:ArrayList>
+						<s:GridColumn dataField="symbol" headerText="Symbol"/>
+						<s:GridColumn dataField="count" headerText="Quanity"/>
+						<s:GridColumn dataField="basis" formatter="{basisFormatter}"
+									  headerText="Basis"/>
+					</s:ArrayList>
+				</components:columns>
+			</components:DataGirdWithSearch>
 		
+	</s:HGroup>
 	</s:VGroup>
+	
 	
 </s:Group>

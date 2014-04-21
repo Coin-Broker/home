@@ -3,7 +3,7 @@
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:mx="library://ns.adobe.com/flex/mx" 
 			   xmlns:views="views.*"
-			   height="600" width="800" >
+			   height="100%" width="100%" >
 	
 	<fx:Declarations>
 		

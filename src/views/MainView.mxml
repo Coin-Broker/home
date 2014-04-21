@@ -54,6 +54,7 @@
 				new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
 				new ServiceDelegate(Services.getCurrentHoldings, "currentHoldings", null);
 				new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
+				new ServiceDelegate(Services.getTranactions, "transactions", null);
 			}
 			
 		]]>

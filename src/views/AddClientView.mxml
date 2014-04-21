@@ -24,22 +24,24 @@
 					address.value == "" ||  city.value == "" ||  state.value == "" ||  
 					pin.value == "" || fName.value == null || lName.value == null ||  phoneInput.value == null ||  
 					address.value == null ||  city.value == null ||  state.value == null ||  
-					pin.value == null)
+					pin.value == null ||  phoneInput.value.length < 10)
 				{
 					Alert.show("missing Data");
 					return;
 				}
 				var client:ClientVO = new ClientVO();
-				client.firstName = fName.inputValue;
-				client.lastName = lName.inputValue;
-				client.phone = phoneInput.inputValue;
-				client.address = address.inputValue;
-				client.city = city.inputValue;
-				client.state = state.inputValue;
-				client.pinCode = pin.inputValue;
+				client.firstName = fName.value;
+				client.lastName = lName.value;
+				client.phone = phoneInput.value;
+				client.address = address.value;
+				client.city = city.value;
+				client.state = state.value;
+				client.pinCode = pin.value;
 				client.accountBalance = Number(dollarAmount.text);
 				
 				new ServiceDelegate(Services.addClient, null, client);
+				new ServiceDelegate(Services.getClients, "clients", null);
+				Alert.show("Account Added");
 				
 			}
 

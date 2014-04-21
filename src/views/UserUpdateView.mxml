@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					xmlns:s="library://ns.adobe.com/flex/spark" 
+					xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="components.*">
+	
+	<fx:Script>
+		<![CDATA[
+			import model.ModelLocator;
+			[Bindable]
+			public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			protected function save(event:MouseEvent):void
+			{
+				// TODO Auto-generated method stub
+				
+			}
+		]]>
+	</fx:Script>
+	
+	<s:HGroup width="100%" >
+		<s:Label text="{'Screen Name :' +modelLocator.currentUser.screenName }" />
+		<s:Spacer width="100%"/>
+		<components:HNameValueLabel id="password" 
+									label="Password: " 
+									editable="true"/>
+		<s:Spacer width="100%"/>
+		<s:Button label="Save" click="save(event)"/>
+		
+	</s:HGroup>
+</s:Group>

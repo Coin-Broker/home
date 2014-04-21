@@ -22,7 +22,7 @@
 	</fx:Script>
 	
 	<s:VGroup>
-		<s:Label text="{commissionRate}"/>	
+		<views:CommissionRateView commissionRate="{commissionRate}"/>
 		<s:Label text="List of Locked Accounts" />
 		<components:DataGirdWithSearch dataProvider="{lockedUsers}">
 			<components:columns>
@@ -31,6 +31,7 @@
 				</s:ArrayList>
 			</components:columns>	
 		</components:DataGirdWithSearch>
+		<views:AddUserView/>
 	</s:VGroup>
 		
 

@@ -1,5 +1,6 @@
 package model
 {
+	[Bindable]
 	public class UserVO
 	{
 		public var screenName:String;

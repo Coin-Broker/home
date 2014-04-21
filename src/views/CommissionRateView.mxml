@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		  xmlns:s="library://ns.adobe.com/flex/spark" 
+		  xmlns:mx="library://ns.adobe.com/flex/mx" xmlns:components="components.*">
+	<fx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			import services.ServiceDelegate;
+			import services.Services;
+			[Bindable]
+			public var commissionRate:Number;
+			
+			private var _editing:Boolean = false;
+
+			[Bindable]
+			public function get editing():Boolean
+			{
+				return _editing;
+			}
+
+			public function set editing(value:Boolean):void
+			{
+				if((Number(rate.text) >= 1 || Number(rate.text) < 0) && !value)
+				{
+					Alert.show("Incorrect Commission Rate Value");
+					return
+				}
+				_editing = value;
+				if(!value)
+				{
+					new ServiceDelegate(Services.changeCommissionRate, "commissionRate", Number(rate.text));
+				}
+			}
+
+		]]>
+	</fx:Script>	
+	<s:Label text="Commission Rate"/>	
+	<s:TextInput id="rate" text="{commissionRate}" editable="{editing}" restrict="[0-9.]"/>
+	<s:Button label="{editing? 'Save' : 'Update Info'}" click="{editing=!editing}"/>
+	
+</s:HGroup>

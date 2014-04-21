@@ -104,7 +104,41 @@ package services
 				{				
 					remoteObject.buySellCoin(params['clientId'],  params['coinSymbol'], params['numberOfShares'], params['price']).addResponder(this);
 					break;
-				}					
+				}	
+					
+				case Services.getTranactions:	
+				{				
+					remoteObject.getTranactions().addResponder(this);
+					break;
+				}
+					
+				case Services.changeCommissionRate:	
+				{				
+					remoteObject.changeCommissionRate(params).addResponder(this);
+					new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
+					break;
+				}
+					
+				case Services.addUser:	
+				{				
+					remoteObject.addUser(params['screenName'], params['password']).addResponder(this);
+					break;
+				}
+					
+				case Services.updateClient:	
+				{				
+					remoteObject.updateClient(params['id'], 
+						params['firstName'],
+						params['lastName'],
+						params['address'],
+						params['city'],
+						params['state'],
+						params['phone'],
+						params['pinCode']						
+					).addResponder(this);
+					new ServiceDelegate(Services.getClients, "clients", null);	
+					break;
+				}
 					
 		
 				default:
@@ -192,6 +226,12 @@ package services
 				case "cashOnHand":
 				{
 					modelLocator.cashOnHand = Number((data as ResultEvent).result);
+					break;
+				}
+					
+				case "transactions":
+				{
+					modelLocator.transactions = new ArrayCollection((data as ResultEvent).result as Array);
 					break;
 				}
 					
