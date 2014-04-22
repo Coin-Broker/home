@@ -32,5 +32,5 @@
 		]]>
 	</fx:Script>
 	<s:Label text="{label}" fontWeight="bold" />
-	<s:TextInput id="inputField"  text="@{value}" editable="{editable}" restrict="[a-zA-Z0-9\-)(]"/>
+	<s:TextInput id="inputField"  text="@{value}" editable="{editable}" restrict="[a-zA-Z0-9\-)( ]"/>
 </s:HGroup>

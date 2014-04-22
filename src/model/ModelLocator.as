@@ -16,6 +16,8 @@ package model
 		public var selectedCoin:CoinVO ;
 		
 		public var lockedAccounts:ArrayCollection = new ArrayCollection();
+		public var users:ArrayCollection = new ArrayCollection();
+		
 		public var currentHoldings:ArrayCollection = new ArrayCollection();
 		public var transactions:ArrayCollection = new ArrayCollection();
 		

@@ -1,0 +1,455 @@
+<?php
+class MySqlServices {
+
+
+    public function requestClients() 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+			mysql_select_db("bitcoin");
+
+			$query = "select * from client WHERE deletedDate IS NULL;";
+
+			$result = mysql_query($query, $mysql_access);
+			$clients = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$client = array(
+					"clientId" => $row[0],
+					"firstName" => $row[1],
+					"lastName" => $row[2],
+					"address" => $row[3],
+					"city" => $row[4],
+					"state" => $row[5],
+					"phone" => $row[6],
+					"cashBalance" => $row[7],
+					"pin" => $row[8]
+					);
+				$clients[] =  $client;
+			}
+			
+			//$client = array(
+			//		"clientId" => "33",
+			//		"firstName" => "one");
+			
+			return  $clients;
+	}
+	
+	public function requestCoins() 
+	{	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+			mysql_select_db("bitcoin");
+
+			$query = "select * from coins;";
+
+			$result = mysql_query($query, $mysql_access);
+			$coins = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$coin = array(
+					"name" => $row[0],
+					"symbol" => $row[1]);
+				$coins[] =  $coin;
+			}			
+			return  $coins;
+	}
+	
+	public function requestClientCoins($clientId) 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+			mysql_select_db("bitcoin");
+
+			$query = "SELECT * FROM `holdings` WHERE `clientID` = " . $clientId . " AND numberOfShares != 0;";
+
+			$result = mysql_query($query, $mysql_access);
+			$coins = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$coin = array(
+					"clientId" => $row[0],
+					"symbol" => $row[1],
+					"count" => $row[2],
+					"basis" => $row[3]
+					);
+				$coins[] =  $coin;
+			}			
+			return  $coins;
+	}  
+
+	
+	public function addClient($firstName , $lastName , $address , $city , $state , $phone , $cashBalance , $pin) 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = sprintf("INSERT INTO `client` (`firstName`,`lastName` ,`address` ,`city` ,`state`,`phone` ,`cashBalance`,`pin`) 
+			VALUES  
+			( '%s', '%s', '%s', '%s', '%s', '%s', %s , '%s');", 
+			mysql_real_escape_string($firstName),
+			mysql_real_escape_string($lastName),
+			mysql_real_escape_string($address),
+			mysql_real_escape_string($city),
+			mysql_real_escape_string($state),
+			mysql_real_escape_string($phone),
+			mysql_real_escape_string($cashBalance),
+			mysql_real_escape_string($pin));
+			
+		return mysql_query($query, $mysql_access);
+	} 
+	
+	public function addSubClientFunds($clientID, $funds)
+	{             
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+
+		mysql_select_db("bitcoin");
+
+		$updateSql = "UPDATE client SET cashBalance = cashBalance + ". $funds ." WHERE clientID = ".$clientID.";";
+		
+		return mysql_query($updateSql,$mysql_access);
+	}
+	
+	public function getCommissionRate()
+	{             
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+
+		mysql_select_db("bitcoin");
+
+		$query = "select * from  brokerageInfo;";
+		
+		$result = mysql_query($query, $mysql_access);
+			$properties = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$property = array(
+					"property" => $row[0],
+					"value" => $row[1],
+					);
+				$properties[] =  $property;
+			}			
+			return  $properties;
+	}
+
+public function addTransaction($clientID, $coinSymbol, $numberOfShares, $pricePerShare, $commisionAmount, $brokerID)
+{             
+	$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+    if(!$mysql_access)
+    {
+		return "Failure";
+    }
+ 
+	mysql_select_db("bitcoin");
+ 
+    $updateSql = "INSERT INTO transaction( clientID, coinSymbol, numberOfShares, pricePerShare, commisionAmount, brokerID) 
+				  VALUES (".$clientID.",'".$coinSymbol."',".$numberOfShares.",".$pricePerShare.",".$commisionAmount.",".$brokerID.")";
+    
+	return mysql_query($updateSql,$mysql_access);
+}
+				
+public function getLockedAccounts() 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = sprintf("SELECT * from `users` where locked = b'1'");
+			
+		$result = mysql_query($query, $mysql_access);
+			$users = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$user = array(
+					"screenName" => $row[0],
+					"password" => $row[1],
+					"lastAttempt" => $row[2],
+					"attemptCount" => $row[3],
+					"locked" => $row[4]
+					);
+				$users[] =  $user;
+			}			
+			return  $users;
+	}	
+	
+	public function getTodaysCoinRecords($coinSymbol) 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = sprintf("SELECT `date`, `".$coinSymbol."` FROM  `daily_coin` WHERE DATE(`date`) = DATE(CURRENT_TIMESTAMP);");
+			
+		$result = mysql_query($query, $mysql_access);
+			$prices = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$price = array(
+					"date" => $row[0],
+					"price" => $row[1],
+					);
+				$prices[] =  $price;
+			}			
+			return  $prices;
+	}
+
+	public function getHoldingsByStock() 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = sprintf("SELECT coinSymbol, numberOfShares, client.clientID , firstName ,  lastName, address, city, state, phone, cashBalance, pin
+							FROM  `holdings` 
+							JOIN `client` ON `client`.clientID = `holdings`.clientID
+							WHERE numberOfShares != 0 AND deletedDate IS NULL;");
+			
+		$result = mysql_query($query, $mysql_access);
+			$coin = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$coins = array(
+					"coinSymbol" => $row[0],
+					"shares" => $row[1],
+					"clientId" => $row[2],
+					"firstName" => $row[3],
+					"lastName" => $row[4],
+					"address" => $row[5],
+					"city" => $row[6],
+					"state" => $row[7],
+					"phone" => $row[8],
+					"cashBalance" => $row[9],
+					"pin" => $row[10]
+					);
+				$coin[] =  $coins;
+			}			
+			return  $coin;
+	}	
+
+	public function getCashHeld() 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = sprintf("SELECT  SUM( cashBalance ) AS cash  FROM  `client` ;");
+			
+		$result = mysql_query($query, $mysql_access);
+			$coin = array();
+			while($row = mysql_fetch_row($result))
+			{
+				return $row[0];
+			}
+	}		
+	
+	public function buySellCoin($clientID, $coinSymbol, $numberOfShares, $price, $commissionRate, $broker){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$exists = mysql_query("SELECT * FROM holdings WHERE clientID = ".$clientID." AND coinSymbol = '".$coinSymbol."';");
+		
+		if(mysql_num_rows($exists)!=0){
+			$updateSql = "UPDATE holdings 
+							SET 
+							numberOfShares = (numberOfShares + ".$numberOfShares.") ,
+							basisOfStock = ((basisOfStock * numberOfShares + ".$numberOfShares." * ".$price.") / (numberOfShares + ".$numberOfShares."))  WHERE (clientID = ".$clientID." AND coinSymbol = '".$coinSymbol."')";
+			mysql_query($updateSql, $mysql_access);
+}
+		else{
+			$insertSql = "INSERT INTO holdings(clientID, coinSymbol, numberOfShares, basisOfStock) VALUES (".$clientID.", '".$coinSymbol."', ".$numberOfShares.", ".$price.")"; 
+			mysql_query($insertSql, $mysql_access);
+			}			
+		
+			
+			$funds = -($numberOfShares * $price);
+			$commission =  abs($commissionRate * $funds);		
+			
+			$updateSql = "UPDATE client SET cashBalance = cashBalance + ". $funds." - ".$commission." WHERE clientID = ".$clientID.";";	
+			mysql_query($updateSql,$mysql_access);		
+			
+			return ;
+
+	}	
+		public function getTranactions(){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$query = "SELECT * FROM transaction ;";
+
+		$result = mysql_query($query, $mysql_access);
+		$transactions = array();
+		while($row = mysql_fetch_row($result))
+		{
+			$transaction = array(
+				"transactionId" => $row[0],
+				"timeStamp" => $row[1],
+				"clientId" => $row[2],
+				"coinSymbol" => $row[3],
+				"numberOfShares" => $row[4],
+				"pricePerShare" => $row[5],
+				"commisionAmount" => $row[6],
+				"brokerID" => $row[7]
+				);
+			$transactions[] =  $transaction;
+		}			
+		return  $transactions;	
+	}
+	
+		public function changeCommissionRate($cRate) 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = 	"UPDATE brokerageInfo 
+					SET `value` = ".$cRate."
+					WHERE `property` = 'CommisionRate'";
+							
+		$result = mysql_query($query, $mysql_access);
+		
+		return  $result;
+	}
+	
+	public function addUser($screenName, $password) 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = 	"INSERT INTO users (`screenName`,`password`,`attemptNumber`, `locked`)
+					VALUES ('".$screenName."','".$password."', 0, b'0');";
+									
+		$result = mysql_query($query, $mysql_access);
+		
+		return  $query;
+	}
+	
+	public function updateClient($clientID, $firstName , $lastName , $address , $city , $state , $phone  , $pin) 
+	{
+	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = 	"UPDATE client 
+					SET 
+					`firstName` = '".$firstName."',
+					`lastName` = '".$lastName."',
+					`address` = '".$address."',
+					`city` = '".$city."',
+					`state` = '".$state."',
+					`phone` = ".$phone.",
+					`pin` = '".$pin."'
+					WHERE `clientID` = ".$clientID.";";
+							
+		$result = mysql_query($query, $mysql_access);
+		
+		return  $result;
+	}
+	
+	public function getUsers(){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$query = "SELECT * FROM users ;";
+
+		$result = mysql_query($query, $mysql_access);
+		$users = array();
+		while($row = mysql_fetch_row($result))
+		{
+			$user = array(
+				"screenName" => $row[0],
+				"password" => $row[1],
+				"lastAttempt" => $row[2],
+				"attemptCount" => $row[3],
+				"locked" => $row[4],
+				"id" => $row[5],
+				"manager" => $row[6]
+				);
+			$users[] =  $user;
+		}			
+		return  $users;	
+	}
+
+	
+}
+?>

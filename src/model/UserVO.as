@@ -9,5 +9,6 @@ package model
 		public var attemptCount:Number;
 		public var locked:Boolean;
 		public var id:int;
+		public var manager:Boolean;
 	}
 }

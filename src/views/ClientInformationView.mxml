@@ -137,6 +137,7 @@
 			protected function buySellStock(params:Object):void
 			{
 				var coinVO:CoinVO =  ModelLocator.getInstance().selectedCoin;
+				var client:ClientVO = ModelLocator.getInstance().selectedClient;
 				if(coinVO == null)
 				{
 					Alert.show("Please select a coin");
@@ -145,8 +146,11 @@
 				params["clientId"]  = client.id;
 				params["coinSymbol"] = coinVO.symbol;
 				params["price"] = ModelLocator.getInstance().selectedCoin.price;
+				params["commissionRate"] = ModelLocator.getInstance().commissionRate;
+				params["brokerID"] = ModelLocator.getInstance().currentUser.id;
 				
 				new ServiceDelegate(Services.sellStock, null, params);
+				client.accountBalance -= (params["price"] * params["numberOfShares"]) - Math.abs(params["price"] * params["numberOfShares"] * params["commissionRate"])
 				
 			}
 			

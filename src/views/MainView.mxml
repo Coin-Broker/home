@@ -20,11 +20,15 @@
 			
 			import model.ClientVO;
 			import model.CoinVO;
+			import model.ModelLocator;
 			
 			import services.ServiceDelegate;
 			import services.Services;
-
+			
 			[Bindable]
+			public var modelLocator:ModelLocator;
+
+/*			[Bindable]
 			public var clients:ArrayCollection;
 			[Bindable]
 			public var coins:ArrayCollection;
@@ -33,7 +37,7 @@
 			public var client:ClientVO;
 			
 			[Bindable]
-			public var coin:CoinVO;
+			public var coin:CoinVO;*/
 			
 			protected function selectClient(event:GridSelectionEvent):void
 			{				
@@ -55,6 +59,7 @@
 				new ServiceDelegate(Services.getCurrentHoldings, "currentHoldings", null);
 				new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
 				new ServiceDelegate(Services.getTranactions, "transactions", null);
+				new ServiceDelegate(Services.getUsers, "users", null);
 			}
 			
 		]]>
@@ -64,8 +69,9 @@
 	<s:HGroup height="100%" width="100%" >
 		<s:VGroup id="clientStockSearch" width="200" height="100%"> 
 			<components:DataGirdWithSearch id="clientSearchGrid" 
+										   selectedItem="{modelLocator.selectedClient}"
 										   prompt="Client Search" 
-										   dataProvider="{clients}"
+										   dataProvider="{modelLocator.clients}"
 										   selectionChange="selectClient(event)">
 				<components:columns>
 					<s:ArrayList>
@@ -78,7 +84,7 @@
 
 			<components:DataGirdWithSearch id="coinSearchGrid" 
 										   prompt="Coin Search" 
-										   dataProvider="{coins}"
+										   dataProvider="{modelLocator.coins}"
 										   selectionChange="selectCoin(event)">
 				<components:columns>
 					<s:ArrayList>
@@ -90,8 +96,8 @@
 			
 		</s:VGroup>
 		<s:VGroup id="clientStockDisplay" height="100%" width="100%" >
-			<views:ClientInformationView client="{client}"/>
-			<views:CoinInformationView coin="{coin}" />
+			<views:ClientInformationView client="{modelLocator.selectedClient}"/>
+			<views:CoinInformationView coin="{modelLocator.selectedCoin}" />
 		</s:VGroup>
 	</s:HGroup>
 </s:NavigatorContent >

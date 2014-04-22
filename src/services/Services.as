@@ -20,5 +20,6 @@ package services
 		public static var changeCommissionRate:String = "changeCommissionRate";
 		public static var addUser:String = "addUser";
 		public static var updateClient:String = "updateClient";
+		public static var getUsers:String = "getUsers";
 	}
 }

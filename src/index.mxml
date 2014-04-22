@@ -37,19 +37,15 @@
 		<s:TabBar dataProvider="{vs}"/>
 		<mx:ViewStack id="vs" height="100%" width="100%" change="viewChange(event)" selectedIndex="@{modelLocator.currentView}" >
 			<views:MainView label="Main View" 
-							coins="{modelLocator.coins}"
-							clients="{modelLocator.clients}"
-							client="{modelLocator.selectedClient}"
-							coin="{modelLocator.selectedCoin}"/>
+							modelLocator="{modelLocator}"/>
 			<views:ClientCoinListsView label="Client Stock Lists" 
 									   coins="{modelLocator.currentHoldings}"
 									   clients="{modelLocator.clients}"
 									   cash="{modelLocator.cashOnHand}"/>
 			<views:AccountManagementView label="Account Management"/>
-			<views:ReportsView label="Reports" transactions="{modelLocator.transactions}"/>
+			<views:ReportsView label="Reports" modelLocator="{modelLocator}"/>
 			<views:ManagementView label="Management" 
-								  lockedUsers="{modelLocator.lockedAccounts}" 
-								  commissionRate="{modelLocator.commissionRate}"/>
+								  modelLocator="{modelLocator}" />
 		</mx:ViewStack>
 	</s:VGroup>
 	

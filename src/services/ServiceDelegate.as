@@ -54,6 +54,7 @@ package services
 					remoteObject.addClient(client.firstName,
 						client.lastName, client.address, client.city, client.state, 
 						client.phone, client.accountBalance, client.pinCode).addResponder(this);
+					new ServiceDelegate(Services.getClients, "clients", null);
 					break;
 				}
 					
@@ -67,6 +68,8 @@ package services
 				case Services.addSubFunds:	
 				{					
 					remoteObject.addSubClientFunds(params["clientId"], params["amount"]).addResponder(this);
+					new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
+
 					break;
 				}	
 					
@@ -78,7 +81,8 @@ package services
 					
 				case Services.addTransaction:	
 				{				
-					remoteObject.addTransaction(params['clientId'], params['amount'], params['coin'], params['numberShares'], params['pricePerShare'], params['commisionAmount'], params['brokerID']).addResponder(this);
+					remoteObject.addTransaction(params['clientId'],  params['coin'], params['numberShares'], params['pricePerShare'], params['commisionAmount'], params['brokerID']).addResponder(this);
+					new ServiceDelegate(Services.getTranactions, "transactions", null);
 					break;
 				}
 					
@@ -102,7 +106,13 @@ package services
 					
 				case Services.sellStock:	
 				{				
-					remoteObject.buySellCoin(params['clientId'],  params['coinSymbol'], params['numberOfShares'], params['price']).addResponder(this);
+					remoteObject.buySellCoin(params['clientId'],  params['coinSymbol'], params['numberOfShares'], params['price'], params['commissionRate'], params['brokerID']).addResponder(this);
+					remoteObject.addTransaction(params['clientId'],  params['coinSymbol'], params['numberOfShares'], params['price'], params['commissionRate'] * params['numberOfShares'] * params['price'], params['brokerID']).addResponder(this);
+					new ServiceDelegate(Services.getCurrentHoldings, "currentHoldings", null);
+					new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
+					new ServiceDelegate(Services.getTranactions, "transactions", null);
+					new ServiceDelegate(Services.getUsers, "users", null);
+					//new ServiceDelegate(Services.getClient, "selectedClient", params);
 					break;
 				}	
 					
@@ -118,10 +128,16 @@ package services
 					new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
 					break;
 				}
+				case Services.getUsers:	
+				{				
+					remoteObject.getUsers().addResponder(this);
+					break;
+				}
 					
 				case Services.addUser:	
 				{				
 					remoteObject.addUser(params['screenName'], params['password']).addResponder(this);
+					new ServiceDelegate(Services.getUsers, "users", null);
 					break;
 				}
 					
@@ -151,7 +167,7 @@ package services
 		
 		public function result(data:Object):void
 		{
-			trace(data);
+			trace(data.result);
 			var collection:ArrayCollection;
 			switch(modelProperty)
 			{
@@ -235,14 +251,17 @@ package services
 					break;
 				}
 					
+				case "users":
+				{
+					modelLocator.users = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}
+					
 				default:
 				{
 					break;
 				}
-			}
-			
-			
-			
+			}			
 		}
 		
 		public function fault(info:Object):void

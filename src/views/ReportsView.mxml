@@ -2,27 +2,22 @@
 <s:NavigatorContent xmlns:fx="http://ns.adobe.com/mxml/2009"
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx" 
-					xmlns:views="views.*"
-					height="100%" width="100%" xmlns:components="components.*" >
-					
-	<fx:Declarations>
-		
-	</fx:Declarations>
+					xmlns:components="components.*" 
+					height="100%" width="100%" >
+
 	
 	
 	<fx:Script>
-		<![CDATA[
-			import mx.collections.ArrayCollection;
-			
+		<![CDATA[			
+			import model.ModelLocator;
 			[Bindable]
-			public var transactions:ArrayCollection;
+			public var modelLocator:ModelLocator;
 			
 		]]>
 	</fx:Script>
 	
-	<components:DataGirdWithSearch dataProvider="{transactions}">
-		
-	</components:DataGirdWithSearch>
-
-
+	<!--<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}"/>-->
+	
+	
+	
 </s:NavigatorContent >

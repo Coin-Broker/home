@@ -12,19 +12,19 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import mx.collections.ArrayCollection;
+			
+			import model.ModelLocator;
+			
 			[Bindable]
-			public var lockedUsers:ArrayCollection;
-			[Bindable]
-			public var commissionRate:Number;
+			public var modelLocator:ModelLocator;
 			
 		]]>
 	</fx:Script>
 	
 	<s:VGroup>
-		<views:CommissionRateView commissionRate="{commissionRate}"/>
+		<views:CommissionRateView commissionRate="{modelLocator.commissionRate}"/>
 		<s:Label text="List of Locked Accounts" />
-		<components:DataGirdWithSearch dataProvider="{lockedUsers}">
+		<components:DataGirdWithSearch dataProvider="{modelLocator.lockedAccounts}">
 			<components:columns>
 				<s:ArrayList>
 					<s:GridColumn  dataField="screenName" headerText="Screen Name"/>
@@ -32,6 +32,9 @@
 			</components:columns>	
 		</components:DataGirdWithSearch>
 		<views:AddUserView/>
+		<views:UsersGridView modelLocator="{modelLocator}" />
+		
+		
 	</s:VGroup>
 		
 
