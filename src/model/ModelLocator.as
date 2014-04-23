@@ -23,13 +23,17 @@ package model
 		
 		public var currentHoldings:ArrayCollection = new ArrayCollection();
 		public var transactions:ArrayCollection = new ArrayCollection();
-		
+		public var dailyActive:ArrayCollection = new ArrayCollection();
+		public var weeklyActive:ArrayCollection = new ArrayCollection();
+		public var monthlyActive:ArrayCollection = new ArrayCollection();
 		
 		public var commissionRate:Number;
 		
 		public var currentView:int;
 		
 		public var cashOnHand:Number;
+		
+		public var brokerageMetrics:Object;
 		
 		
 		private static var instance:ModelLocator;
@@ -91,7 +95,11 @@ package model
 			new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
 			new ServiceDelegate(Services.getTranactions, "transactions", null);
 			new ServiceDelegate(Services.getUsers, "users", null);
-			new ServiceDelegate(Services.getLockedAccounts, "lockedAccounts", null);	
+			new ServiceDelegate(Services.getLockedAccounts, "lockedAccounts", null);
+			new ServiceDelegate(Services.getMetrics, "brokerageMetrics", null);
+			new ServiceDelegate(Services.getSaleActivity, "dailyActive", {range:"DATE", back:"1 MONTH"});
+			new ServiceDelegate(Services.getSaleActivity, "weeklyActive", {range:"WEEK", back:"12 WEEK"});
+			new ServiceDelegate(Services.getSaleActivity, "monthlyActive", {range:"MONTH", back:"1 YEAR"});
 			random = Number( int(Math.random() * 8999)  + 1000);
 		}
 	}

@@ -172,6 +172,20 @@ package services
 					break;
 				}
 					
+				case Services.getMetrics:	
+				{				
+					remoteObject.getMetrics().addResponder(this);
+					break;
+				}
+					
+				case Services.getSaleActivity:	
+				{				
+					//DATE WEEK MONTH
+					//"1 MONTH" "12 WEEKS" "1 YEAR"
+					remoteObject.getSaleActivity(params['range'], params['back']).addResponder(this);
+					break;
+				}
+					
 		
 				default:
 				{
@@ -275,7 +289,7 @@ package services
 					
 				case "currentUser":
 				{
-					if(!(data as ResultEvent).result)
+					if((data as ResultEvent).result == "Failure")
 						return;
 					
 					var obj:* = (data as ResultEvent).result;
@@ -284,6 +298,30 @@ package services
 					user.manager = obj["manager"];
 					user.screenName = obj["screenName"];
 					modelLocator.currentUser = user;
+					break;
+				}
+					
+				case "brokerageMetrics":
+				{					
+					modelLocator.brokerageMetrics = (data as ResultEvent).result[0];
+					break;
+				}
+					
+				case "dailyActive":
+				{					
+					modelLocator.dailyActive = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}
+					
+				case "weeklyActive":
+				{					
+					modelLocator.weeklyActive = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}
+					
+				case "monthlyActive":
+				{					
+					modelLocator.monthlyActive = new ArrayCollection((data as ResultEvent).result as Array);
 					break;
 				}
 					

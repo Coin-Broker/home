@@ -23,5 +23,7 @@ package services
 		public static var getUsers:String = "getUsers";
 		public static var getCoinHistory:String = "getCoinHistory";
 		public static var login:String = "login";
+		public static var getMetrics:String = "getMetrics";
+		public static var getSaleActivity:String = "getSaleActivity";
 	}
 }

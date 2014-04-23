@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:HGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx"
+		 width="100%">
+	
+	<fx:Declarations>
+		<s:NumberFormatter id="twoDecForm" fractionalDigits="2"  />
+	</fx:Declarations>
+	
+	<fx:Script>
+		<![CDATA[
+			public function set metrics(value:Object):void
+			{
+
+				deposits = value['deposits'];
+				withdraws = value['withdraws'];
+				sales = value['sales'];
+				purchases = value['purchases'];
+				commission = value['commission'];
+			}
+			
+			[Bindable]
+			public var deposits:Number
+			[Bindable]
+			public var withdraws:Number
+			[Bindable]
+			public var sales:Number
+			[Bindable]
+			public var purchases:Number
+			[Bindable]
+			public var commission:Number
+			
+
+		]]>
+	</fx:Script>
+	<s:Label text="{'Total Deposits: ' + twoDecForm.format( deposits)}"/>
+	<s:Spacer width="100%"/>
+	<s:Label text="{'Total Withdraws: ' + twoDecForm.format( withdraws)}"/>
+	<s:Spacer width="100%"/>
+	<s:Label text="{'Total Sales Value: ' + twoDecForm.format( -sales)}"/>
+	<s:Spacer width="100%"/>
+	<s:Label text="{'Total Purchase Value: ' + twoDecForm.format( purchases)}"/>
+	<s:Spacer width="100%"/>
+	<s:Label text="{'Total Commission Collected: ' + twoDecForm.format( commission)}"/>
+</s:HGroup>

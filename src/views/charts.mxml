@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:VGroup xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
+		 xmlns:views="views.*"
+		 height="40%" width="100%">
+	
+	<fx:Script>
+		<![CDATA[
+			import model.ModelLocator;
+			
+			[Bindable]
+			public var modelLocator:ModelLocator = ModelLocator.getInstance();
+			public function dailyParseFunction(s:String):Date { 
+				var tokens:Array = s.split(/[: -]/);
+				var newDate:Date = new Date()
+				newDate.setTime(Date.UTC(tokens[0], (tokens[1] > 0 ? tokens[1] - 1 : 11), tokens[2]));//, tokens[3], tokens[4]));
+				
+				return newDate;
+			}
+			
+		]]>
+	</fx:Script>
+	<s:TabBar dataProvider="{vs}"/>
+	<mx:ViewStack id="vs" height="100%" width="100%" >
+		<s:NavigatorContent label="Daily">
+			<views:dailyChart dataProvider="{modelLocator.dailyActive}"/>
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent label="Weekly">
+			<views:dailyChart dataProvider="{modelLocator.weeklyActive}"/>
+		</s:NavigatorContent>
+		
+		<s:NavigatorContent label="Yearly">
+			<views:intChart dataProvider="{modelLocator.monthlyActive}"/>
+		</s:NavigatorContent>
+	</mx:ViewStack>	
+</s:VGroup>

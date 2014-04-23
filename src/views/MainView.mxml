@@ -53,21 +53,15 @@
 						
 			protected function init(event:FlexEvent):void
 			{
-				new ServiceDelegate(Services.getClients, "clients", null);	
-				new ServiceDelegate(Services.getCoins, "coins", null);				
-				new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
-				new ServiceDelegate(Services.getCurrentHoldings, "currentHoldings", null);
-				new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
-				new ServiceDelegate(Services.getTranactions, "transactions", null);
-				new ServiceDelegate(Services.getUsers, "users", null);
+				modelLocator.update();
 			}
 			
 		]]>
 	</fx:Script>
 	
 						
-	<s:HGroup height="100%" width="100%" >
-		<s:VGroup id="clientStockSearch" width="200" height="100%"> 
+	<s:HGroup height="100%" width="100%" left="10" right="10" top="10" bottom="10">
+		<s:VGroup id="clientStockSearch" width="300" height="100%"> 
 			<components:DataGirdWithSearch id="clientSearchGrid" 
 										   selectedItem="{modelLocator.selectedClient}"
 										   prompt="Client Search" 
@@ -75,8 +69,9 @@
 										   selectionChange="selectClient(event)">
 				<components:columns>
 					<s:ArrayList>
+						<s:GridColumn dataField="clientId" headerText="ID" width="25"/>
 						<s:GridColumn  dataField="firstName" headerText="Last Name"/>
-						<s:GridColumn dataField="lastName" headerText="Last Name"/>
+						<s:GridColumn dataField="lastName" headerText="Last Name"/>						
 					</s:ArrayList>
 				</components:columns>				
 			</components:DataGirdWithSearch>

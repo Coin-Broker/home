@@ -3,7 +3,7 @@
 					xmlns:s="library://ns.adobe.com/flex/spark"
 					xmlns:mx="library://ns.adobe.com/flex/mx" 
 					xmlns:components="components.*" 
-					height="100%" width="100%" >
+					height="100%" width="100%" xmlns:views="views.*" >
 
 	
 	
@@ -15,8 +15,13 @@
 			
 		]]>
 	</fx:Script>
+	<s:VGroup width="100%" left="10" right="10" top="10" bottom="10">
+		<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}" height="50%"/>
+		<views:MetricsView metrics="{modelLocator.brokerageMetrics}"/>
+		<views:charts height="50%" />
+
+	</s:VGroup>
 	
-	<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}"/>
 	
 	
 	

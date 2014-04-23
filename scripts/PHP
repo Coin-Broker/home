@@ -229,6 +229,31 @@ public function getLockedAccounts()
 			}			
 			return  $prices;
 	}
+	
+	public function getCoinHistory($coinSymbol) 
+	{	
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+			if(!$mysql_access)
+			{
+					return "Failure";
+			}
+			
+		mysql_select_db("bitcoin");
+
+		$query  = sprintf("SELECT `date`, `".$coinSymbol."` FROM  `history_table` ;");
+			
+		$result = mysql_query($query, $mysql_access);
+			$prices = array();
+			while($row = mysql_fetch_row($result))
+			{
+				$price = array(
+					"date" => $row[0],
+					"price" => $row[1],
+					);
+				$prices[] =  $price;
+			}			
+			return  $prices;
+	}
 
 	public function getHoldingsByStock() 
 	{
@@ -333,7 +358,7 @@ public function getLockedAccounts()
 		 
 		mysql_select_db("bitcoin");
 
-		$query = "SELECT * FROM transaction ;";
+		$query = "SELECT * FROM transaction WHERE numberOfShares != 0;";
 
 		$result = mysql_query($query, $mysql_access);
 		$transactions = array();
@@ -374,6 +399,70 @@ public function getLockedAccounts()
 		return  $result;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+private static $algo = '$2a';  
+private static $cost = '$10'; 
+// mainly for internal use  
+public static function unique_salt() {  
+return substr(sha1(mt_rand()),0,22);  
+}  
+
+// this will be used to generate a hash  
+public static function myHash($password) {  
+
+return crypt($password,  
+self::$algo .  
+self::$cost .  
+'$' . self::unique_salt());  
+
+}  
+
+// this will be used to compare a password against a hash  
+public static function check_password($hash, $password) {
+$full_salt = substr($hash, 0, 29);  
+
+$new_hash = crypt($password, $full_salt);  
+
+return ($hash === $new_hash);  
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public function addUser($screenName, $password) 
 	{
 	
@@ -382,12 +471,12 @@ public function getLockedAccounts()
 			{
 					return "Failure";
 			}
-			
+		$hashedPassword	= $password;
 		mysql_select_db("bitcoin");
 
 		$query  = 	"INSERT INTO users (`screenName`,`password`,`attemptNumber`, `locked`)
-					VALUES ('".$screenName."','".$password."', 0, b'0');";
-									
+					VALUES ('".$screenName."','".$hashedPassword."', 0, b'0');";
+
 		$result = mysql_query($query, $mysql_access);
 		
 		return  $query;
@@ -448,6 +537,139 @@ public function getLockedAccounts()
 			$users[] =  $user;
 		}			
 		return  $users;	
+	}
+	
+	public function login($screenName, $password)
+{
+
+	$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+		
+		
+	$uExists = mysql_query("SELECT * FROM users WHERE screenName = '".$screenName."';", $mysql_access);
+	
+	$pExists = mysql_query("SELECT * FROM users WHERE screenName = '".$screenName."' AND password = '".$password."';", $mysql_access);
+	$lExists = mysql_query("SELECT * FROM users WHERE screenName = '".$screenName."' AND locked = '".true."';", $mysql_access);
+	$aNum = mysql_query("SELECT attemptNumber FROM users WHERE screenName = '".$screenName."';", $mysql_access);
+	
+	if(mysql_num_rows($uExists) != 0)
+	{
+		if(mysql_num_rows($lExists) == 0)
+		{
+			if(mysql_num_rows($pExists) == 1)
+			{
+				//login
+				$userObject = array();
+				mysql_query("UPDATE users SET attemptNumber = 0 WHERE screenName = '".$screenName."';", $mysql_access);
+
+				while($row = mysql_fetch_row($pExists))
+				{
+					$userObject = array(
+						"screenName" => $row[0],
+						"password" => $row[1],
+						"lastAttempt" => $row[2],
+						"attemptCount" => $row[3],
+						"locked" => $row[4],
+						"id" => $row[5],
+						"manager" => $row[6]
+						);
+				}					
+				return $userObject;
+			}
+			else if($aNum <= 4)
+			{
+				//increment attempt
+				$selectSql = mysql_query("SELECT attemptNumber FROM users WHERE screenName = ".$screenName, $mysql_access);
+				$selectSql++;
+				mysql_query("UPDATE users SET attemptNumber = attemptNumber + 1 WHERE screenName = ".$screeenName, $mysql_access);
+				return "Failure";
+			}
+			else
+			{
+				mysql_query("UPDATE users SET locked = $selectSql, lastAttempt = $timeStamp WHERE screenName = ".$screeenName, $mysql_access);
+				return "Failure";
+			}
+			
+		}
+		else
+		{
+			//failed login
+			return "Failure";
+		}
+		
+	}
+	return "Failure";
+}
+
+	public function getMetrics(){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$query = "SELECT 
+					SUM(commisionAmount) AS commission, 
+					SUM(CASE WHEN numberOfShares > 0 AND coinSymbol != 'BALANCE' THEN numberOfShares * pricePerShare END) AS purchases,
+					SUM(CASE WHEN numberOfShares < 0 AND coinSymbol != 'BALANCE' THEN numberOfShares * pricePerShare END) AS sales,
+					SUM(CASE WHEN numberOfShares > 0 AND coinSymbol = 'BALANCE' THEN numberOfShares * pricePerShare END) AS deposits,
+					SUM(CASE WHEN numberOfShares < 0 AND coinSymbol = 'BALANCE' THEN numberOfShares * pricePerShare END) AS withdraws
+					FROM transaction WHERE DATE(`timeStamp`) > ADDDATE(CURRENT_TIMESTAMP, INTERVAL -1 MONTH);";
+
+		$result = mysql_query($query, $mysql_access);
+		$metricss = array();
+		while($row = mysql_fetch_row($result))
+		{
+			$metrics = array(
+				"commission" => $row[0],
+				"purchases" => $row[1],
+				"sales" => $row[2],
+				"deposits" => $row[3],
+				"withdraws" => $row[4],
+				);
+			$metricss[] =  $metrics;
+		}			
+		return  $metricss;	
+	}
+	
+	public function getSaleActivity($range, $back){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$query = "SELECT 
+					SUM(commisionAmount) AS commission, 
+					SUM(CASE WHEN numberOfShares > 0 AND coinSymbol != 'BALANCE' THEN numberOfShares * pricePerShare END) AS purchases,
+					SUM(CASE WHEN numberOfShares < 0 AND coinSymbol != 'BALANCE' THEN -numberOfShares * pricePerShare END) AS sales,
+					".$range."(`timeStamp`) AS date
+					FROM transaction WHERE DATE(`timeStamp`) > ADDDATE(CURRENT_TIMESTAMP, INTERVAL -".$back.") GROUP BY date;";
+
+		$result = mysql_query($query, $mysql_access);
+		$metricss = array();
+		while($row = mysql_fetch_row($result))
+		{
+			$metrics = array(
+				"commission" => $row[0],
+				"purchases" => $row[1],
+				"sales" => $row[2],
+				"date" => $row[3]
+				);
+			$metricss[] =  $metrics;
+		}			
+		return  $metricss;	
 	}
 
 	
