@@ -16,7 +16,7 @@
 		]]>
 	</fx:Script>
 	
-	<!--<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}"/>-->
+	<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}"/>
 	
 	
 	

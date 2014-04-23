@@ -2,11 +2,14 @@ package model
 {
 	import mx.collections.ArrayCollection;
 	import mx.rpc.remoting.RemoteObject;
+	
+	import services.ServiceDelegate;
+	import services.Services;
 
 	[Bindable]
 	public class ModelLocator 
 	{
-		public var currentUser:UserVO = new UserVO();
+		public var currentUser:UserVO = null;
 		
 		public var remoteObject:RemoteObject;
 		public var clients:ArrayCollection;
@@ -30,6 +33,7 @@ package model
 		
 		
 		private static var instance:ModelLocator;
+		public var random:Number;
 		/**
 		 *
 		 * Defines the Singleton instance of the Application 
@@ -78,6 +82,18 @@ package model
 		
 		
 		
+		public function update():void
+		{
+			new ServiceDelegate(Services.getClients, "clients", null);	
+			new ServiceDelegate(Services.getCoins, "coins", null);				
+			new ServiceDelegate(Services.getcomissionRate, "comissionRate", null);
+			new ServiceDelegate(Services.getCurrentHoldings, "currentHoldings", null);
+			new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
+			new ServiceDelegate(Services.getTranactions, "transactions", null);
+			new ServiceDelegate(Services.getUsers, "users", null);
+			new ServiceDelegate(Services.getLockedAccounts, "lockedAccounts", null);	
+			random = Number( int(Math.random() * 8999)  + 1000);
+		}
 	}
 }
 

@@ -15,6 +15,7 @@
 			import mx.controls.Alert;
 			
 			import model.ClientVO;
+			import model.ModelLocator;
 			
 			import services.ServiceDelegate;
 			import services.Services;
@@ -42,6 +43,7 @@
 				new ServiceDelegate(Services.addClient, null, client);
 				new ServiceDelegate(Services.getClients, "clients", null);
 				Alert.show("Account Added");
+				ModelLocator.getInstance().update();
 				
 			}
 
@@ -79,7 +81,7 @@
 			<components:HNameValueLabel id="state" 
 										label="State: " editable="true"/>
 			<s:Spacer width="100%"/>
-			<components:HNameValueLabel id="pin" 
+			<components:HNameValueLabel id="pin" value="{ModelLocator.getInstance().random}"
 										label="PIN: " editable="true"/>
 		</s:HGroup>
 

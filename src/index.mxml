@@ -23,8 +23,7 @@
 			
 			protected function viewChange(event:IndexChangedEvent):void
 			{
-				if(vs.selectedIndex == 4)
-					new ServiceDelegate(Services.getLockedAccounts, "lockedAccounts", null);
+				modelLocator.update();
 				
 			}
 			
@@ -32,7 +31,7 @@
 	</fx:Script>
 	
 	
-	<s:VGroup width="100%" height="100%">
+	<s:VGroup width="100%" height="100%" visible="{modelLocator.currentUser != null}">
 		<views:BannerMenu/>
 		<s:TabBar dataProvider="{vs}"/>
 		<mx:ViewStack id="vs" height="100%" width="100%" change="viewChange(event)" selectedIndex="@{modelLocator.currentView}" >
@@ -48,6 +47,8 @@
 								  modelLocator="{modelLocator}" />
 		</mx:ViewStack>
 	</s:VGroup>
+	
+	<views:LoginScreen visible="{modelLocator.currentUser == null}"/>
 	
 	
 	

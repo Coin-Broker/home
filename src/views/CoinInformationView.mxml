@@ -19,7 +19,7 @@
 			public function dateParseFunction(s:String):Date { 
 				var tokens:Array = s.split(/[: -]/);
 				var newDate:Date = new Date()
-				newDate.setTime(Date.UTC(tokens[0], tokens[1], tokens[2], tokens[3], tokens[4]));
+				newDate.setTime(Date.UTC(tokens[0], tokens[1], tokens[2]));//, tokens[3], tokens[4]));
 				return newDate;
 			}
 		]]>

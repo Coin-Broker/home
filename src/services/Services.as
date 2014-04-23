@@ -21,5 +21,7 @@ package services
 		public static var addUser:String = "addUser";
 		public static var updateClient:String = "updateClient";
 		public static var getUsers:String = "getUsers";
+		public static var getCoinHistory:String = "getCoinHistory";
+		public static var login:String = "login";
 	}
 }

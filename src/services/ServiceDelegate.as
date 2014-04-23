@@ -8,6 +8,7 @@ package services
 	import model.ClientVO;
 	import model.CoinVO;
 	import model.ModelLocator;
+	import model.UserVO;
 	
 	public class ServiceDelegate implements IResponder
 	{
@@ -69,6 +70,8 @@ package services
 				{					
 					remoteObject.addSubClientFunds(params["clientId"], params["amount"]).addResponder(this);
 					new ServiceDelegate(Services.getCurrentCashHoldings, "cashOnHand", null);
+					remoteObject.addTransaction(params['clientId'],  "BALANCE", params["amount"], 1, 0, modelLocator.currentUser.id).addResponder(this);
+					
 
 					break;
 				}	
@@ -88,7 +91,14 @@ package services
 					
 				case Services.getCoin:	
 				{				
-					remoteObject.getTodaysCoinRecords(params['symbol']).addResponder(this);
+					//remoteObject.getTodaysCoinRecords(params['symbol']).addResponder(this);
+					remoteObject.getCoinHistory(params['symbol']).addResponder(this);
+					break;
+				}
+					
+				case Services.getCoinHistory:	
+				{				
+					remoteObject.getCoinHistory(params['symbol']).addResponder(this);
 					break;
 				}
 					
@@ -153,6 +163,12 @@ package services
 						params['pinCode']						
 					).addResponder(this);
 					new ServiceDelegate(Services.getClients, "clients", null);	
+					break;
+				}
+					
+				case Services.login:	
+				{				
+					remoteObject.login(params['screenName'], params['password']).addResponder(this);
 					break;
 				}
 					
@@ -254,6 +270,20 @@ package services
 				case "users":
 				{
 					modelLocator.users = new ArrayCollection((data as ResultEvent).result as Array);
+					break;
+				}
+					
+				case "currentUser":
+				{
+					if(!(data as ResultEvent).result)
+						return;
+					
+					var obj:* = (data as ResultEvent).result;
+					var user:UserVO = new UserVO();
+					user.id = obj["id"];
+					user.manager = obj["manager"];
+					user.screenName = obj["screenName"];
+					modelLocator.currentUser = user;
 					break;
 				}
 					
