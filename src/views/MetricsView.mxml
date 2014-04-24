@@ -34,6 +34,7 @@
 
 		]]>
 	</fx:Script>
+	<s:Spacer width="100%"/>
 	<s:Label text="{'Total Deposits: ' + twoDecForm.format( deposits)}"/>
 	<s:Spacer width="100%"/>
 	<s:Label text="{'Total Withdraws: ' + twoDecForm.format( withdraws)}"/>
@@ -43,4 +44,5 @@
 	<s:Label text="{'Total Purchase Value: ' + twoDecForm.format( purchases)}"/>
 	<s:Spacer width="100%"/>
 	<s:Label text="{'Total Commission Collected: ' + twoDecForm.format( commission)}"/>
+	<s:Spacer width="100%"/>
 </s:HGroup>

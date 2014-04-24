@@ -15,9 +15,9 @@
 			
 		]]>
 	</fx:Script>
-	<s:VGroup left="10" right="10" top="10" bottom="10"  gap="20">
+	<s:VGroup left="10" right="10" top="10" bottom="10"  gap="40">
 		<views:charts height="300" />
-		<views:MetricsView metrics="{modelLocator.brokerageMetrics}"/>
+		<views:MetricsView metrics="{modelLocator.brokerageMetrics}" />
 		<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}" height="50%"/>
 		
 		
