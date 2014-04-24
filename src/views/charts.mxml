@@ -24,15 +24,15 @@
 	<s:TabBar dataProvider="{vs}"/>
 	<mx:ViewStack id="vs" height="100%" width="100%" >
 		<s:NavigatorContent label="Daily">
-			<views:dailyChart dataProvider="{modelLocator.dailyActive}"/>
+			<views:dailyChart dataProvider="{modelLocator.dailyActive}" height="300"/>
 		</s:NavigatorContent>
 		
 		<s:NavigatorContent label="Weekly">
-			<views:dailyChart dataProvider="{modelLocator.weeklyActive}"/>
+			<views:intChart dataProvider="{modelLocator.weeklyActive}" height="300"/>
 		</s:NavigatorContent>
 		
 		<s:NavigatorContent label="Yearly">
-			<views:intChart dataProvider="{modelLocator.monthlyActive}"/>
+			<views:intChart dataProvider="{modelLocator.monthlyActive}" weekly="false" height="300"/>
 		</s:NavigatorContent>
 	</mx:ViewStack>	
 </s:VGroup>

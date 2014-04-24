@@ -111,7 +111,8 @@
 		</s:HGroup>
 				
 		
-		<components:DataGirdWithSearch id="dateGrid" doubleClickEnabled="true"  
+		<components:DataGirdWithSearch id="dateGrid" doubleClickEnabled="true" 
+									   includeInLayout="{currentView == 'clients'}" visible="{currentView == 'clients'}"  
 									   doubleClick="dataGridClicked(event)"
 									   dataProvider="{dataProvider}"
 									   prompt="{(currentView == 'clients' ? 'Client Search' : 'Coin Search')}">
@@ -119,6 +120,7 @@
 		</components:DataGirdWithSearch>
 		
 		<mx:AdvancedDataGrid id="myADG" 
+							 includeInLayout="{currentView != 'clients'}" visible="{currentView != 'clients'}" 
 							 width="100%" height="100%" 
 							 initialize="gc.refresh();"
 							 doubleClickEnabled="true"

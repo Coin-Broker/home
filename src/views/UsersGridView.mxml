@@ -6,13 +6,29 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import mx.controls.Alert;
+			
 			import model.ModelLocator;
+			
+			import services.ServiceDelegate;
+			import services.Services;
 			
 			[Bindable]
 			public var modelLocator:ModelLocator;
+			
+			protected function doubleclickEvent(event:MouseEvent):void
+			{
+				var params:Object = new Object();
+				params['userId'] = users.selectedItem['id'];
+				params['password'] = int(Math.random() * 99999999 ) + 10000000;
+				new ServiceDelegate(Services.updatePassword, null, params );
+				Alert.show(users.selectedItem['screenName']+ "'s password has been updated to "+params['password'] +"please have user login and change it");
+			}
+			
 		]]>
 	</fx:Script>	
-	<components:DataGirdWithSearch dataProvider="{modelLocator.users}">
+	<components:DataGirdWithSearch id="users" dataProvider="{modelLocator.users}"
+								   doubleClickEnabled="true" doubleClick="doubleclickEvent(event)">
 		<components:columns>
 			<s:ArrayList>
 				<s:GridColumn  dataField="screenName" headerText="Screen Name"/>

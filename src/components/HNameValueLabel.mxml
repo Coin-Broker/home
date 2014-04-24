@@ -10,6 +10,10 @@
 			public var label:String;
 			[Bindable]
 			public var value:String;
+			[Bindable]
+			public var displayAsPassword:Boolean = false;
+			
+			
 			private var _editable:Boolean
 
 			[Bindable]
@@ -32,5 +36,9 @@
 		]]>
 	</fx:Script>
 	<s:Label text="{label}" fontWeight="bold" />
-	<s:TextInput id="inputField"  text="@{value}" editable="{editable}" restrict="[a-zA-Z0-9\-)( ]"/>
+	<s:TextInput id="inputField"  
+				 text="@{value}" 
+				 editable="{editable}" 
+				 restrict="[a-zA-Z0-9\-)( ]" 
+				 displayAsPassword="{displayAsPassword}"/>
 </s:HGroup>

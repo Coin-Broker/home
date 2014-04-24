@@ -25,5 +25,7 @@ package services
 		public static var login:String = "login";
 		public static var getMetrics:String = "getMetrics";
 		public static var getSaleActivity:String = "getSaleActivity";
+		public static var updatePassword:String = "updatePassword";
+		public static var unlockAccount:String = "unlockAccount";
 	}
 }

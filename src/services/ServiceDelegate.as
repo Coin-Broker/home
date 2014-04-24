@@ -1,6 +1,7 @@
 package services
 {
 	import mx.collections.ArrayCollection;
+	import mx.controls.Alert;
 	import mx.rpc.IResponder;
 	import mx.rpc.events.ResultEvent;
 	import mx.rpc.remoting.RemoteObject;
@@ -186,6 +187,18 @@ package services
 					break;
 				}
 					
+				case Services.updatePassword:	
+				{
+					remoteObject.updateUserPassword(params['userId'], params['password']).addResponder(this);
+					break;
+				}
+					
+					
+				case Services.unlockAccount:	
+				{
+					remoteObject.unlockAccount(params['screenName']).addResponder(this);
+					break;
+				}
 		
 				default:
 				{
@@ -289,13 +302,37 @@ package services
 					
 				case "currentUser":
 				{
-					if((data as ResultEvent).result == "Failure")
+					if((data as ResultEvent).result is String){
+						switch((data as ResultEvent).result)
+						{
+							case "Failure1":
+							{
+								Alert.show("Account locked due to many failed login attempts");
+								break;
+							}
+								
+							case "Failure2":
+							{
+								Alert.show("Account is now locked due to many failed login attempts");
+								break;
+							}
+								
+							default:
+							{
+								Alert.show("Incorrect credentials");
+								break;
+							}
+						}
+
+						
 						return;
+					}
+						
 					
 					var obj:* = (data as ResultEvent).result;
 					var user:UserVO = new UserVO();
 					user.id = obj["id"];
-					user.manager = obj["manager"];
+					user.manager = obj["manager"] == "";
 					user.screenName = obj["screenName"];
 					modelLocator.currentUser = user;
 					break;
@@ -324,6 +361,14 @@ package services
 					modelLocator.monthlyActive = new ArrayCollection((data as ResultEvent).result as Array);
 					break;
 				}
+					
+				case "unlockedAccounts":
+				{					
+					modelLocator.update();
+					break;
+				}
+					
+					
 					
 				default:
 				{

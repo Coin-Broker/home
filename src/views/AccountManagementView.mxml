@@ -17,7 +17,8 @@
 	</fx:Script>
 	<s:VGroup>
 		<views:AddClientView />
-		<views:UserUpdateView />	
+		<s:Spacer height="20"/>
+		<views:UpdatePasswordView />	
 	</s:VGroup>
 					
 

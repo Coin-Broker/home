@@ -4,9 +4,13 @@
 		  xmlns:mx="library://ns.adobe.com/flex/mx">
 	<fx:Script>
 		<![CDATA[
+			import mx.charts.chartClasses.IAxis;
 			import mx.collections.ArrayCollection;
 			[Bindable]
 			public var dataProvider:ArrayCollection;
+			
+			[Bindable]
+			public var weekly:Boolean = true; 
 			
 			public function dateParseFunction(s:String):Date { 
 				var tokens:Array = s.split(/[: -]/);
@@ -14,6 +18,16 @@
 				newDate.setTime(Date.UTC(tokens[0], (tokens[1] > 0 ? tokens[1] - 1 : 11), tokens[2]));//, tokens[3], tokens[4]));
 				
 				return newDate;
+			}
+			public function function_name(labelValue:Object, previousValue:Object, axis:IAxis):String 
+			{
+				if(weekly)
+					return labelValue as String;
+				var monthNames:Array = ["January", "February", "March", "April", "May",
+				"June", "July", "August", "September", "October", 
+				"November", "December"];
+				
+				return monthNames[labelValue];
 			}
 			
 		]]>
@@ -25,13 +39,11 @@
 				  dataProvider="{dataProvider}" 
 				  showDataTips="true">
 		<mx:horizontalAxis>
-			<mx:LinearAxis />
+			<mx:LinearAxis labelFunction="function_name"/>
 		</mx:horizontalAxis>
-		<mx:verticalAxis>
-			<mx:LinearAxis baseAtZero="true" />
-		</mx:verticalAxis>
+
 		<mx:series>
-			<mx:LineSeries yField="purchases" displayName="Purchases" xField="date"/>
+			<mx:LineSeries yField="purchases" displayName="Purchases" xField="date" />
 			<mx:LineSeries yField="sales" displayName="Sales" xField="date"/>
 			<mx:LineSeries yField="commssion" displayName="Commission" xField="date"/>			
 		</mx:series>

@@ -31,7 +31,8 @@
 	</fx:Script>
 	
 	
-	<s:VGroup width="100%" height="100%" visible="{modelLocator.currentUser != null}">
+	<s:VGroup width="100%" height="100%" visible="{modelLocator.currentUser != null}"
+			  left="10" right="10" top="10" bottom="10">
 		<views:BannerMenu/>
 		<s:TabBar dataProvider="{vs}"/>
 		<mx:ViewStack id="vs" height="100%" width="100%" change="viewChange(event)" selectedIndex="@{modelLocator.currentView}" >
@@ -44,11 +45,11 @@
 			<views:AccountManagementView label="Account Management"/>
 			<views:ReportsView label="Reports" modelLocator="{modelLocator}"/>
 			<views:ManagementView label="Management" 
-								  modelLocator="{modelLocator}" />
+								  modelLocator="{modelLocator}"  />
 		</mx:ViewStack>
 	</s:VGroup>
 	
-	<views:LoginScreen visible="{modelLocator.currentUser == null}"/>
+	<views:LoginScreen visible="{modelLocator.currentUser == null}" />
 	
 	
 	

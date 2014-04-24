@@ -15,10 +15,12 @@
 			
 		]]>
 	</fx:Script>
-	<s:VGroup width="100%" left="10" right="10" top="10" bottom="10">
-		<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}" height="50%"/>
+	<s:VGroup left="10" right="10" top="10" bottom="10"  gap="20">
+		<views:charts height="300" />
 		<views:MetricsView metrics="{modelLocator.brokerageMetrics}"/>
-		<views:charts height="50%" />
+		<components:DataGirdWithSearch dataProvider="{modelLocator.transactions}" height="50%"/>
+		
+		
 
 	</s:VGroup>
 	

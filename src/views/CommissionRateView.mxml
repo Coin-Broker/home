@@ -37,6 +37,6 @@
 	</fx:Script>	
 	<s:Label text="Commission Rate"/>	
 	<s:TextInput id="rate" text="{commissionRate}" editable="{editing}" restrict="[0-9.]"/>
-	<s:Button label="{editing? 'Save' : 'Update Info'}" click="{editing=!editing}"/>
+	<s:Button label="{editing? 'Save' : 'Rate'}" click="{editing=!editing}"/>
 	
 </s:HGroup>

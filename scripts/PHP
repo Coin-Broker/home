@@ -555,12 +555,14 @@ return ($hash === $new_hash);
 	
 	$pExists = mysql_query("SELECT * FROM users WHERE screenName = '".$screenName."' AND password = '".$password."';", $mysql_access);
 	$lExists = mysql_query("SELECT * FROM users WHERE screenName = '".$screenName."' AND locked = '".true."';", $mysql_access);
-	$aNum = mysql_query("SELECT attemptNumber FROM users WHERE screenName = '".$screenName."';", $mysql_access);
+	$attemptCounter= mysql_query("SELECT attemptNumber FROM users WHERE screenName = '".$screenName."';", $mysql_access);
 	
 	if(mysql_num_rows($uExists) != 0)
 	{
 		if(mysql_num_rows($lExists) == 0)
 		{
+			$row = mysql_fetch_row($attemptCounter);
+			$aNum = $row[0];
 			if(mysql_num_rows($pExists) == 1)
 			{
 				//login
@@ -584,22 +586,20 @@ return ($hash === $new_hash);
 			else if($aNum <= 4)
 			{
 				//increment attempt
-				$selectSql = mysql_query("SELECT attemptNumber FROM users WHERE screenName = ".$screenName, $mysql_access);
-				$selectSql++;
-				mysql_query("UPDATE users SET attemptNumber = attemptNumber + 1 WHERE screenName = ".$screeenName, $mysql_access);
-				return "Failure";
+				mysql_query("UPDATE users SET `attemptNumber` = (`attemptNumber` + 1) WHERE screenName = '".$screenName."';", $mysql_access);
+				return "Failure3";
 			}
 			else
 			{
-				mysql_query("UPDATE users SET locked = $selectSql, lastAttempt = $timeStamp WHERE screenName = ".$screeenName, $mysql_access);
-				return "Failure";
+				mysql_query("UPDATE users SET locked = b'1' WHERE screenName = '".$screenName."';", $mysql_access);
+				return "Failure2";
 			}
 			
 		}
 		else
 		{
 			//failed login
-			return "Failure";
+			return "Failure1";
 		}
 		
 	}
@@ -670,6 +670,35 @@ return ($hash === $new_hash);
 			$metricss[] =  $metrics;
 		}			
 		return  $metricss;	
+	}
+	
+	public function updateUserPassword($userId, $password){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$query = "UPDATE `users` SET `password` = '".$password."' WHERE brokerId = ".$userId.";";
+		mysql_query($query, $mysql_access);
+	}
+	
+	public function unlockAccount($userId){
+
+		$mysql_access = mysql_connect("localhost", "jason", "Jason4$");
+		if(!$mysql_access)
+		{
+			return "Failure";
+		}
+		 
+		mysql_select_db("bitcoin");
+
+		$query = "UPDATE `users` SET `locked` = b'0' WHERE screenName = '".$userId."';";
+		mysql_query($query, $mysql_access);
+		
 	}
 
 	

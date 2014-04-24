@@ -12,30 +12,51 @@
 	
 	<fx:Script>
 		<![CDATA[
-			
 			import model.ModelLocator;
+			
+			import services.ServiceDelegate;
+			import services.Services;
 			
 			[Bindable]
 			public var modelLocator:ModelLocator;
 			
+			protected function doubleclickEvent(event:MouseEvent):void
+			{
+				new ServiceDelegate(Services.unlockAccount, "unlockedAccounts", datagrid.theGrid.selectedItem);
+				
+			}
+			
 		]]>
 	</fx:Script>
 	
-	<s:VGroup>
+	<s:VGroup visible="{modelLocator.currentUser.manager}" 
+			  includeInLayout="{modelLocator.currentUser.manager}">
 		<views:CommissionRateView commissionRate="{modelLocator.commissionRate}"/>
 		<s:Label text="List of Locked Accounts" />
-		<components:DataGirdWithSearch dataProvider="{modelLocator.lockedAccounts}">
+		<s:Label text="Double click to clear lock"/>
+		<components:DataGirdWithSearch id="datagrid"
+									   dataProvider="{modelLocator.lockedAccounts}" 
+									   doubleClickEnabled="true" doubleClick="doubleclickEvent(event)">
 			<components:columns>
 				<s:ArrayList>
 					<s:GridColumn  dataField="screenName" headerText="Screen Name"/>
 				</s:ArrayList>
 			</components:columns>	
 		</components:DataGirdWithSearch>
+		<s:Label text="Create New User"/>
 		<views:AddUserView/>
+		<s:Label text="Double click to reset users password"/>
 		<views:UsersGridView modelLocator="{modelLocator}" />
 		
 		
 	</s:VGroup>
+	
+	<s:Group visible="{!modelLocator.currentUser.manager}" 
+			  includeInLayout="{!modelLocator.currentUser.manager}"
+			  verticalCenter="0" horizontalCenter="0">
+		<s:Label text="This View is Only for Managers" />
+		
+	</s:Group>
 		
 
 </s:NavigatorContent >
