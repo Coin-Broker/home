@@ -11,13 +11,6 @@
 			
 			[Bindable]
 			public var modelLocator:ModelLocator = ModelLocator.getInstance();
-			public function dailyParseFunction(s:String):Date { 
-				var tokens:Array = s.split(/[: -]/);
-				var newDate:Date = new Date()
-				newDate.setTime(Date.UTC(tokens[0], (tokens[1] > 0 ? tokens[1] - 1 : 11), tokens[2]));//, tokens[3], tokens[4]));
-				
-				return newDate;
-			}
 			
 		]]>
 	</fx:Script>

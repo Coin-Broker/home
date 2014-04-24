@@ -24,11 +24,12 @@
 			{
 				if(weekly)
 					return labelValue as String;
+				
 				var monthNames:Array = ["January", "February", "March", "April", "May",
 				"June", "July", "August", "September", "October", 
 				"November", "December"];
 				
-				return monthNames[labelValue];
+				return monthNames[Number(labelValue) - 1 ];
 			}
 			
 		]]>
@@ -40,13 +41,13 @@
 				  dataProvider="{dataProvider}" 
 				  showDataTips="true">
 		<mx:horizontalAxis>
-			<mx:LinearAxis labelFunction="function_name"/>
+			<mx:LinearAxis labelFunction="function_name" baseAtZero="false"/>
 		</mx:horizontalAxis>
 
 		<mx:series>
 			<mx:LineSeries yField="purchases" displayName="Purchases" xField="date" />
 			<mx:LineSeries yField="sales" displayName="Sales" xField="date"/>
-			<mx:LineSeries yField="commssion" displayName="Commission" xField="date"/>			
+			<mx:LineSeries yField="commission" displayName="Commission" xField="date"/>			
 		</mx:series>
 		
 	</mx:LineChart>

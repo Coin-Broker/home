@@ -12,7 +12,7 @@
 			public function dateParseFunction(s:String):Date { 
 				var tokens:Array = s.split(/[: -]/);
 				var newDate:Date = new Date()
-				newDate.setTime(Date.UTC(tokens[0], (tokens[1] > 0 ? tokens[1] - 1 : 11), tokens[2]));//, tokens[3], tokens[4]));
+				newDate.setTime(Date.UTC(tokens[0], (tokens[1] > 0 ? tokens[1]  : 11), tokens[2]));//, tokens[3], tokens[4]));
 
 				return newDate;
 			}
@@ -28,13 +28,22 @@
 		<mx:horizontalAxis>
 			<mx:DateTimeAxis parseFunction="dateParseFunction" />
 		</mx:horizontalAxis>
-		<mx:verticalAxis>
-			<mx:LinearAxis baseAtZero="true" />
-		</mx:verticalAxis>
 		<mx:series>
-			<mx:LineSeries yField="purchases" displayName="Purchases" xField="date"/>
-			<mx:LineSeries yField="sales" displayName="Sales" xField="date"/>
-			<mx:LineSeries yField="commssion" displayName="Commission" xField="date"/>			
+			<mx:LineSeries yField="purchases" displayName="Purchases" xField="date">
+				<mx:verticalAxis> 
+					<mx:LinearAxis baseAtZero="true"/> 
+				</mx:verticalAxis>
+			</mx:LineSeries>
+			<mx:LineSeries yField="sales" displayName="Sales" xField="date">
+				<mx:verticalAxis> 
+					<mx:LinearAxis baseAtZero="true"/> 
+				</mx:verticalAxis>
+			</mx:LineSeries>
+			<mx:LineSeries yField="commission" displayName="Commission" xField="date">
+				<mx:verticalAxis> 
+					<mx:LinearAxis baseAtZero="true"/> 
+				</mx:verticalAxis>
+			</mx:LineSeries>			
 		</mx:series>
 		
 	</mx:LineChart>
